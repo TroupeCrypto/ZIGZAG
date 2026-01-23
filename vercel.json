@@ -1,3 +1,10 @@
 {
-  "version": 2
+  "version": 2,
+  "//": "Rewrite all non-asset, non-API paths to the Next.js app entry",
+  "rewrites": [
+    {
+      "source": "/((?!_next/|api/|.*\\..*).*)",
+      "destination": "/"
+    }
+  ]
 }
