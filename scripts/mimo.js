@@ -1,5 +1,19 @@
-// Mimo Persistent Modal/Dashboard Functionality
+/**
+ * Mimo Persistent Modal/Dashboard Functionality
+ * 
+ * Handles the floating Mimo assistant modal that persists across all pages.
+ * Features include minimize/maximize, dragging, tab switching, music player,
+ * wallet connection, NFT gallery, and notifications.
+ * 
+ * @author ZIG ZAG
+ * @version 1.0.0
+ * @license MIT
+ */
 
+/**
+ * Initialize Mimo modal functionality when DOM is loaded
+ * @listens DOMContentLoaded
+ */
 document.addEventListener('DOMContentLoaded', function() {
     const mimoContainer = document.getElementById('mimo-container');
     const mimoMinimize = document.getElementById('mimo-minimize');
@@ -41,6 +55,10 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('mousemove', drag);
     document.addEventListener('mouseup', dragEnd);
     
+    /**
+     * Initialize dragging functionality for Mimo modal
+     * @param {MouseEvent} e - Mouse event
+     */
     function dragStart(e) {
         if (mimoContainer.classList.contains('minimized')) return;
         
@@ -53,6 +71,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
+    /**
+     * Handle drag movement
+     * @param {MouseEvent} e - Mouse event
+     */
     function drag(e) {
         if (isDragging) {
             e.preventDefault();
@@ -65,11 +87,20 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
+    /**
+     * End dragging
+     */
     function dragEnd() {
         isDragging = false;
         mimoContainer.classList.remove('dragging');
     }
     
+    /**
+     * Set element transform position
+     * @param {number} xPos - X position
+     * @param {number} yPos - Y position
+     * @param {HTMLElement} el - Element to transform
+     */
     function setTranslate(xPos, yPos, el) {
         el.style.transform = `translate(${xPos}px, ${yPos}px)`;
     }
@@ -123,6 +154,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 1500);
     });
     
+    /**
+     * Load user's NFT collection into gallery
+     */
     function loadUserNFTs() {
         nftGallery.innerHTML = '';
         const emojis = ['🎨', '🌈', '✨', '🔮', '🌟', '💫'];
@@ -138,7 +172,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Notification system
+    /**
+     * Add notification to the notifications panel
+     * @param {string} icon - Emoji icon for notification
+     * @param {string} text - Notification message text
+     */
     function addNotification(icon, text) {
         const notifList = document.querySelector('.notifications-list');
         const notifItem = document.createElement('div');

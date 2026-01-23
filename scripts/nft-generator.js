@@ -1,5 +1,19 @@
-// NFT Generator Functionality
+/**
+ * NFT Generator Functionality
+ * 
+ * Canvas-based generative art system for creating unique NFT artwork.
+ * Supports 4 art styles (Psychedelic, Abstract, Geometric, Cyberpunk)
+ * with 4 color schemes and adjustable complexity.
+ * 
+ * @author ZIG ZAG
+ * @version 1.0.0
+ * @license MIT
+ */
 
+/**
+ * Initialize NFT generator when DOM is loaded
+ * @listens DOMContentLoaded
+ */
 document.addEventListener('DOMContentLoaded', function() {
     const canvas = document.getElementById('nft-canvas');
     const ctx = canvas ? canvas.getContext('2d') : null;
@@ -21,9 +35,9 @@ document.addEventListener('DOMContentLoaded', function() {
         'Dark': ['#1a1a2e', '#16213e', '#0f3460', '#533483', '#e94560']
     };
     
-    // Initialize canvas with placeholder
-    drawPlaceholder();
-    
+    /**
+     * Draw placeholder on canvas
+     */
     function drawPlaceholder() {
         const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
         gradient.addColorStop(0, '#ff00ff');
@@ -40,6 +54,9 @@ document.addEventListener('DOMContentLoaded', function() {
         ctx.fillText('Click Generate to create NFT', canvas.width / 2, canvas.height / 2);
     }
     
+    /**
+     * Generate NFT artwork based on selected parameters
+     */
     function generateNFT() {
         const artStyle = artStyleSelect.value;
         const colorScheme = colorSchemeSelect.value;
@@ -78,6 +95,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
+    /**
+     * Draw psychedelic art style
+     * @param {Array<string>} colors - Color palette
+     * @param {number} complexity - Complexity level (1-10)
+     */
     function drawPsychedelicArt(colors, complexity) {
         const centerX = canvas.width / 2;
         const centerY = canvas.height / 2;
@@ -105,6 +127,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
+    /**
+     * Draw abstract art style
+     * @param {Array<string>} colors - Color palette
+     * @param {number} complexity - Complexity level (1-10)
+     */
     function drawAbstractArt(colors, complexity) {
         const numShapes = complexity * 3;
         
@@ -129,6 +156,11 @@ document.addEventListener('DOMContentLoaded', function() {
         ctx.globalAlpha = 1;
     }
     
+    /**
+     * Draw geometric art style
+     * @param {Array<string>} colors - Color palette
+     * @param {number} complexity - Complexity level (1-10)
+     */
     function drawGeometricArt(colors, complexity) {
         const gridSize = 10 - complexity;
         const cellWidth = canvas.width / gridSize;
@@ -161,6 +193,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
+    /**
+     * Draw cyberpunk art style
+     * @param {Array<string>} colors - Color palette
+     * @param {number} complexity - Complexity level (1-10)
+     */
     function drawCyberpunkArt(colors, complexity) {
         // Dark background
         ctx.fillStyle = '#0a0a0a';
@@ -202,6 +239,10 @@ document.addEventListener('DOMContentLoaded', function() {
         ctx.shadowBlur = 0;
     }
     
+    /**
+     * Mint NFT to blockchain
+     * @async
+     */
     async function mintNFT() {
         if (!currentNFT) return;
         

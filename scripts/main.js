@@ -1,5 +1,19 @@
-// ZIG ZAG Hub - Interactive Features
+/**
+ * ZIG ZAG Hub - Interactive Features
+ * 
+ * Main application logic for the ZIG ZAG deluxe hub space.
+ * Handles initialization of all interactive features including
+ * wallet connection, music players, art gallery, marketplace, and navigation.
+ * 
+ * @author ZIG ZAG
+ * @version 1.0.0
+ * @license MIT
+ */
 
+/**
+ * Initialize all application features when DOM is loaded
+ * @listens DOMContentLoaded
+ */
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🎨 ZIG ZAG Hub Loaded');
     
@@ -18,7 +32,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 100);
 });
 
-// Wallet Connection Feature
+/**
+ * Initialize wallet connection functionality
+ * Handles MetaMask detection and connection simulation
+ * @function initializeWalletConnect
+ * @returns {void}
+ */
 function initializeWalletConnect() {
     const connectButton = document.getElementById('connect-wallet');
     const walletStatus = document.getElementById('wallet-status');
@@ -47,7 +66,12 @@ function initializeWalletConnect() {
     });
 }
 
-// Music Player Features
+/**
+ * Initialize music player controls and interactions
+ * Sets up event listeners for stream, download, and buy buttons
+ * @function initializeMusicPlayers
+ * @returns {void}
+ */
 function initializeMusicPlayers() {
     const streamButtons = document.querySelectorAll('.btn-stream');
     const downloadButtons = document.querySelectorAll('.btn-download');
@@ -78,7 +102,12 @@ function initializeMusicPlayers() {
     });
 }
 
-// Art Gallery Features
+/**
+ * Initialize art gallery interactions
+ * Sets up modal viewing for artwork pieces
+ * @function initializeArtGallery
+ * @returns {void}
+ */
 function initializeArtGallery() {
     const viewButtons = document.querySelectorAll('.btn-view');
     
@@ -91,7 +120,12 @@ function initializeArtGallery() {
     });
 }
 
-// Marketplace Features
+/**
+ * Initialize marketplace features including public/private toggle
+ * Handles marketplace button interactions and toggle functionality
+ * @function initializeMarketplace
+ * @returns {void}
+ */
 function initializeMarketplace() {
     const marketplaceButtons = document.querySelectorAll('.btn-marketplace');
     const toggleBtns = document.querySelectorAll('.toggle-btn');
@@ -149,7 +183,12 @@ function initializeMarketplace() {
     });
 }
 
-// Smooth Scrolling for Navigation
+/**
+ * Initialize smooth scrolling for navigation links
+ * Adds smooth scroll behavior and highlight effects
+ * @function initializeSmoothScrolling
+ * @returns {void}
+ */
 function initializeSmoothScrolling() {
     const navLinks = document.querySelectorAll('.nav-link');
     
@@ -175,7 +214,13 @@ function initializeSmoothScrolling() {
     });
 }
 
-// Utility Functions
+/**
+ * Display a notification message to the user
+ * @function showNotification
+ * @param {string} message - The notification message
+ * @param {string} [type='success'] - Notification type ('success' or 'error')
+ * @returns {void}
+ */
 function showNotification(message, type = 'success') {
     // Remove existing notification if any
     const existingNotif = document.querySelector('.notification');
@@ -208,6 +253,12 @@ function showNotification(message, type = 'success') {
     }, 3000);
 }
 
+/**
+ * Animate a button with scale effect
+ * @function animateButton
+ * @param {HTMLElement} button - The button element to animate
+ * @returns {void}
+ */
 function animateButton(button) {
     button.style.transform = 'scale(0.95)';
     setTimeout(() => {
@@ -215,6 +266,12 @@ function animateButton(button) {
     }, 150);
 }
 
+/**
+ * Display art piece in a modal overlay
+ * @function showArtModal
+ * @param {string} artName - Name of the art piece to display
+ * @returns {void}
+ */
 function showArtModal(artName) {
     const modal = document.createElement('div');
     modal.className = 'art-modal';

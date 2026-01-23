@@ -1,5 +1,19 @@
-// Smart Contract Generator Functionality
+/**
+ * Smart Contract Generator Functionality
+ * 
+ * Generates production-ready Solidity smart contracts for various token standards.
+ * Supports ERC-721 (NFT), ERC-20 (Token), ERC-1155 (Multi-Token), and custom contracts.
+ * Includes OpenZeppelin imports for security and best practices.
+ * 
+ * @author ZIG ZAG
+ * @version 1.0.0
+ * @license MIT
+ */
 
+/**
+ * Initialize smart contract generator when DOM is loaded
+ * @listens DOMContentLoaded
+ */
 document.addEventListener('DOMContentLoaded', function() {
     const contractTypeSelect = document.getElementById('contract-type');
     const tokenNameInput = document.getElementById('token-name');
@@ -122,6 +136,9 @@ contract ${symbol} is Ownable {
 }`
     };
     
+    /**
+     * Generate smart contract based on user input
+     */
     function generateContract() {
         const contractType = contractTypeSelect.value;
         const tokenName = tokenNameInput.value || 'MyToken';
@@ -137,6 +154,10 @@ contract ${symbol} is Ownable {
         }
     }
     
+    /**
+     * Display generated contract code with syntax highlighting
+     * @param {string} code - Solidity contract code
+     */
     function displayContract(code) {
         contractCode.textContent = code;
         contractOutput.style.display = 'block';
@@ -145,6 +166,9 @@ contract ${symbol} is Ownable {
         contractOutput.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
     
+    /**
+     * Copy contract code to clipboard
+     */
     function copyContract() {
         const code = contractCode.textContent;
         
@@ -165,6 +189,10 @@ contract ${symbol} is Ownable {
         });
     }
     
+    /**
+     * Deploy contract to blockchain (simulation)
+     * @async
+     */
     async function deployContract() {
         deployBtn.textContent = 'Deploying...';
         deployBtn.disabled = true;
