@@ -2,6 +2,7 @@ node_modules/
 .vercel
 .env
 .env.local
+.env*.local
 dist/
 build/
 *.log
@@ -9,3 +10,5 @@ build/
 private/
 tests/coverage/
 .nyc_output/
+.next/
+out/
