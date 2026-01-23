@@ -95,6 +95,7 @@ export default function MimoAssistant() {
         document.removeEventListener('mouseup', handleMouseUp)
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDragging, dragStart])
 
   const containerStyle = {
