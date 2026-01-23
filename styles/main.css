@@ -1,4 +1,4 @@
-/* ZIG ZAG Deluxe Hub - Psychedelic Styling */
+/* ZIG ZAG Deluxe Hub - Enhanced Psychedelic Styling */
 
 :root {
     --primary-color: #ff00ff;
@@ -8,6 +8,7 @@
     --light-text: #ffffff;
     --gradient-1: linear-gradient(135deg, #ff00ff, #00ffff, #ffff00, #ff00ff);
     --gradient-2: linear-gradient(45deg, #ff0080, #00ff80, #0080ff);
+    --gradient-3: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     --glow-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
 }
 
@@ -18,7 +19,7 @@
 }
 
 body {
-    font-family: 'Courier New', monospace;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: var(--dark-bg);
     color: var(--light-text);
     line-height: 1.6;
@@ -448,6 +449,223 @@ body::before {
 }
 
 /* Marketplace Section */
+.marketplace-toggle {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.toggle-btn {
+    padding: 15px 40px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 0, 255, 0.3);
+    border-radius: 30px;
+    color: var(--light-text);
+    font-weight: bold;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.toggle-btn:hover {
+    border-color: var(--primary-color);
+    background: rgba(255, 0, 255, 0.1);
+}
+
+.toggle-btn.active {
+    background: var(--gradient-2);
+    border-color: transparent;
+    box-shadow: 0 5px 20px rgba(255, 0, 255, 0.5);
+}
+
+.marketplace-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.private-card {
+    border: 2px solid var(--accent-color);
+    background: rgba(255, 215, 0, 0.05);
+}
+
+/* NFT Generator Section */
+.nft-generator-section,
+.contract-generator-section {
+    margin-bottom: 50px;
+    padding: 30px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    border: 2px solid rgba(255, 0, 255, 0.2);
+}
+
+.subsection-title {
+    color: var(--accent-color);
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.generator-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.generator-canvas {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#nft-canvas {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(255, 0, 255, 0.3);
+}
+
+.generator-preview {
+    margin-top: 15px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.generator-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.control-group label {
+    color: var(--secondary-color);
+    font-weight: bold;
+}
+
+.control-group select,
+.control-group input[type="text"] {
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    color: var(--light-text);
+    font-size: 1rem;
+}
+
+.control-group select:focus,
+.control-group input[type="text"]:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
+}
+
+.control-group input[type="range"] {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    outline: none;
+}
+
+.control-group input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: var(--gradient-2);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.btn-generate,
+.btn-mint,
+.btn-generate-contract,
+.btn-copy-contract,
+.btn-deploy-contract {
+    padding: 15px 30px;
+    background: var(--gradient-2);
+    border: none;
+    border-radius: 25px;
+    color: var(--light-text);
+    font-weight: bold;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-generate:hover,
+.btn-mint:hover,
+.btn-generate-contract:hover,
+.btn-copy-contract:hover,
+.btn-deploy-contract:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 20px rgba(255, 0, 255, 0.5);
+}
+
+.btn-mint {
+    background: var(--gradient-3);
+}
+
+/* Smart Contract Generator */
+.contract-form {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.form-row {
+    margin-bottom: 20px;
+}
+
+.form-row label {
+    display: block;
+    color: var(--secondary-color);
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.form-row select,
+.form-row input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    color: var(--light-text);
+    font-size: 1rem;
+}
+
+.contract-output {
+    margin-top: 30px;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    border: 1px solid var(--primary-color);
+}
+
+.contract-output pre {
+    background: #1e1e1e;
+    padding: 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 15px;
+}
+
+.contract-output code {
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+}
+
+/* Marketplace Section */
 .marketplace-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -564,6 +782,23 @@ footer {
     .crypto-grid,
     .marketplace-grid {
         grid-template-columns: 1fr;
+    }
+    
+    .generator-container {
+        grid-template-columns: 1fr;
+    }
+    
+    #nft-canvas {
+        width: 100%;
+        height: auto;
+    }
+    
+    .marketplace-toggle {
+        flex-direction: column;
+    }
+    
+    .toggle-btn {
+        width: 100%;
     }
 }
 

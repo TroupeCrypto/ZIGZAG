@@ -94,12 +94,43 @@ function initializeArtGallery() {
 // Marketplace Features
 function initializeMarketplace() {
     const marketplaceButtons = document.querySelectorAll('.btn-marketplace');
+    const toggleBtns = document.querySelectorAll('.toggle-btn');
+    const publicMarketplace = document.querySelector('.public-marketplace');
+    const privateMarketplace = document.querySelector('.private-marketplace');
+    
+    // Toggle between public and private marketplaces
+    toggleBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const type = this.dataset.type;
+            
+            toggleBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            
+            if (type === 'public') {
+                publicMarketplace.style.display = 'grid';
+                privateMarketplace.style.display = 'none';
+                if (window.mimoNotify) {
+                    window.mimoNotify('🔓', 'Viewing Public Marketplace');
+                }
+            } else {
+                publicMarketplace.style.display = 'none';
+                privateMarketplace.style.display = 'grid';
+                if (window.mimoNotify) {
+                    window.mimoNotify('🔒', 'Viewing Private IP Marketplace');
+                }
+            }
+        });
+    });
     
     marketplaceButtons.forEach(button => {
         button.addEventListener('click', function() {
             const marketplace = this.closest('.marketplace-card').querySelector('h3').textContent;
             showNotification(`Opening ${marketplace}...`);
             animateButton(this);
+            
+            if (window.mimoNotify) {
+                window.mimoNotify('🛒', `Opening ${marketplace}`);
+            }
         });
     });
     
@@ -110,6 +141,10 @@ function initializeMarketplace() {
             const action = this.closest('.crypto-card').querySelector('h3').textContent;
             showNotification(`Loading ${action}...`);
             animateButton(this);
+            
+            if (window.mimoNotify) {
+                window.mimoNotify('₿', `Loading ${action}`);
+            }
         });
     });
 }

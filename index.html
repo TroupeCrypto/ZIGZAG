@@ -5,8 +5,71 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZIG ZAG - Deluxe Hub Space</title>
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/mimo.css">
 </head>
 <body>
+    <!-- Persistent Mimo Modal/Dashboard -->
+    <div id="mimo-container" class="mimo-container minimized">
+        <div class="mimo-header">
+            <div class="mimo-avatar">🎭</div>
+            <span class="mimo-title">Mimo Assistant</span>
+            <div class="mimo-controls">
+                <button id="mimo-minimize" class="mimo-btn">−</button>
+                <button id="mimo-maximize" class="mimo-btn">□</button>
+            </div>
+        </div>
+        <div class="mimo-content">
+            <div class="mimo-tabs">
+                <button class="mimo-tab active" data-tab="music">🎵 Music</button>
+                <button class="mimo-tab" data-tab="wallet">💳 Wallet</button>
+                <button class="mimo-tab" data-tab="nft">🖼️ NFT</button>
+                <button class="mimo-tab" data-tab="notifications">🔔 Alerts</button>
+            </div>
+            
+            <div class="mimo-panel active" id="music-panel">
+                <h3>Music Player</h3>
+                <div class="music-player">
+                    <div class="now-playing">No track loaded</div>
+                    <div class="player-controls">
+                        <button class="player-btn">⏮️</button>
+                        <button class="player-btn play-btn">▶️</button>
+                        <button class="player-btn">⏭️</button>
+                    </div>
+                    <input type="range" class="volume-slider" min="0" max="100" value="70">
+                </div>
+            </div>
+            
+            <div class="mimo-panel" id="wallet-panel">
+                <h3>Wallet</h3>
+                <div class="wallet-info">
+                    <div class="wallet-status">Not Connected</div>
+                    <button class="mimo-wallet-connect">Connect Wallet</button>
+                    <div class="wallet-balance" style="display:none;">
+                        <p>Balance: <span id="eth-balance">0 ETH</span></p>
+                        <p>Address: <span id="wallet-address">-</span></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mimo-panel" id="nft-panel">
+                <h3>Your NFTs</h3>
+                <div class="nft-gallery">
+                    <p class="empty-state">Connect wallet to view NFTs</p>
+                </div>
+            </div>
+            
+            <div class="mimo-panel" id="notifications-panel">
+                <h3>Notifications</h3>
+                <div class="notifications-list">
+                    <div class="notification-item">
+                        <span class="notif-icon">🎉</span>
+                        <span class="notif-text">Welcome to ZIG ZAG Hub!</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <header class="hero">
             <div class="logo-container">
@@ -154,6 +217,76 @@
             <!-- Crypto Section -->
             <section id="crypto" class="section crypto-section">
                 <h2 class="section-title">Crypto Hub</h2>
+                
+                <!-- NFT Generator -->
+                <div class="nft-generator-section">
+                    <h3 class="subsection-title">NFT Generator</h3>
+                    <div class="generator-container">
+                        <div class="generator-canvas">
+                            <canvas id="nft-canvas" width="500" height="500"></canvas>
+                            <div class="generator-preview">
+                                <p>Generate unique NFTs with AI</p>
+                            </div>
+                        </div>
+                        <div class="generator-controls">
+                            <div class="control-group">
+                                <label>Art Style:</label>
+                                <select id="art-style">
+                                    <option>Psychedelic</option>
+                                    <option>Abstract</option>
+                                    <option>Geometric</option>
+                                    <option>Cyberpunk</option>
+                                </select>
+                            </div>
+                            <div class="control-group">
+                                <label>Color Scheme:</label>
+                                <select id="color-scheme">
+                                    <option>Rainbow</option>
+                                    <option>Neon</option>
+                                    <option>Pastel</option>
+                                    <option>Dark</option>
+                                </select>
+                            </div>
+                            <div class="control-group">
+                                <label>Complexity:</label>
+                                <input type="range" id="complexity" min="1" max="10" value="5">
+                            </div>
+                            <button class="btn-generate">Generate NFT</button>
+                            <button class="btn-mint">Mint to Blockchain</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Smart Contract Generator -->
+                <div class="contract-generator-section">
+                    <h3 class="subsection-title">Smart Contract Generator</h3>
+                    <div class="contract-form">
+                        <div class="form-row">
+                            <label>Contract Type:</label>
+                            <select id="contract-type">
+                                <option>ERC-721 (NFT)</option>
+                                <option>ERC-20 (Token)</option>
+                                <option>ERC-1155 (Multi-Token)</option>
+                                <option>Custom</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <label>Token Name:</label>
+                            <input type="text" id="token-name" placeholder="My Token">
+                        </div>
+                        <div class="form-row">
+                            <label>Token Symbol:</label>
+                            <input type="text" id="token-symbol" placeholder="MTK">
+                        </div>
+                        <button class="btn-generate-contract">Generate Contract</button>
+                        <div class="contract-output" style="display:none;">
+                            <pre><code id="contract-code"></code></pre>
+                            <button class="btn-copy-contract">Copy Code</button>
+                            <button class="btn-deploy-contract">Deploy to Network</button>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="crypto-grid">
                     <div class="crypto-card">
                         <h3>NFT Collections</h3>
@@ -222,7 +355,14 @@
             <!-- Marketplace Section -->
             <section id="marketplace" class="section marketplace-section">
                 <h2 class="section-title">Marketplaces</h2>
-                <div class="marketplace-grid">
+                
+                <!-- Public vs Private Toggle -->
+                <div class="marketplace-toggle">
+                    <button class="toggle-btn active" data-type="public">🔓 Public Marketplace</button>
+                    <button class="toggle-btn" data-type="private">🔒 Private IP</button>
+                </div>
+                
+                <div class="marketplace-grid public-marketplace">
                     <div class="marketplace-card">
                         <h3>🎵 Music Store</h3>
                         <p>Purchase and download exclusive tracks, beats, and albums</p>
@@ -264,6 +404,40 @@
                         <button class="btn-marketplace">Get Quote</button>
                     </div>
                 </div>
+                
+                <!-- Private IP Marketplace (hidden by default) -->
+                <div class="marketplace-grid private-marketplace" style="display:none;">
+                    <div class="marketplace-card private-card">
+                        <h3>🔐 Proprietary NFT Engine</h3>
+                        <p>Advanced NFT generation algorithms and intellectual property</p>
+                        <ul>
+                            <li>AI-powered generation</li>
+                            <li>Custom smart contracts</li>
+                            <li>Exclusive access</li>
+                        </ul>
+                        <button class="btn-marketplace">Request Access</button>
+                    </div>
+                    <div class="marketplace-card private-card">
+                        <h3>🔐 Trading Algorithms</h3>
+                        <p>Proprietary crypto trading bots and strategies</p>
+                        <ul>
+                            <li>Advanced ML models</li>
+                            <li>Real-time analysis</li>
+                            <li>Premium features</li>
+                        </ul>
+                        <button class="btn-marketplace">Request Access</button>
+                    </div>
+                    <div class="marketplace-card private-card">
+                        <h3>🔐 Custom Solutions</h3>
+                        <p>Bespoke development and consulting</p>
+                        <ul>
+                            <li>One-on-one consultation</li>
+                            <li>Tailored development</li>
+                            <li>Full support</li>
+                        </ul>
+                        <button class="btn-marketplace">Get Quote</button>
+                    </div>
+                </div>
             </section>
         </main>
 
@@ -279,5 +453,8 @@
     </div>
 
     <script src="scripts/main.js"></script>
+    <script src="scripts/mimo.js"></script>
+    <script src="scripts/nft-generator.js"></script>
+    <script src="scripts/contract-generator.js"></script>
 </body>
 </html>
