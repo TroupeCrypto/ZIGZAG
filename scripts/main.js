@@ -203,20 +203,25 @@ function showArtModal(artName) {
             padding: 40px;
             border-radius: 20px;
             text-align: center;
-            max-width: 800px;
+            max-width: 90vw;
+            max-height: 90vh;
             animation: zoomIn 0.3s ease-out;
+            overflow: auto;
         ">
             <h2 style="margin-bottom: 20px; font-size: 2.5rem;">${artName}</h2>
             <div style="
-                width: 600px;
-                height: 600px;
+                width: 100%;
+                max-width: 600px;
+                height: auto;
+                aspect-ratio: 1;
+                max-height: 60vh;
                 background: linear-gradient(45deg, #ff0080, #00ff80, #0080ff);
                 border-radius: 10px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 font-size: 10rem;
-                margin: 20px 0;
+                margin: 20px auto;
             ">🎨</div>
             <p style="margin: 20px 0; font-size: 1.2rem;">High-resolution artwork would be displayed here</p>
             <button onclick="this.closest('.art-modal').remove()" style="
@@ -281,16 +286,26 @@ document.head.appendChild(style);
 
 // Easter egg: Konami code
 let konamiCode = [];
-const konamiSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+const konamiSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
 
 document.addEventListener('keydown', function(e) {
-    konamiCode.push(e.key);
+    konamiCode.push(e.code || e.key);
     if (konamiCode.length > konamiSequence.length) {
         konamiCode.shift();
     }
     
-    if (JSON.stringify(konamiCode) === JSON.stringify(konamiSequence)) {
+    // Check if sequences match
+    let matches = true;
+    for (let i = 0; i < konamiSequence.length; i++) {
+        if (konamiCode[i] !== konamiSequence[i]) {
+            matches = false;
+            break;
+        }
+    }
+    
+    if (matches && konamiCode.length === konamiSequence.length) {
         activateEasterEgg();
+        konamiCode = [];
     }
 });
 

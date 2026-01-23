@@ -81,6 +81,7 @@ body::before {
 .logo {
     font-size: 5rem;
     font-weight: bold;
+    color: var(--primary-color);
     background: var(--gradient-1);
     background-size: 300% 300%;
     -webkit-background-clip: text;
@@ -177,6 +178,7 @@ body::before {
     font-size: 2.5rem;
     margin-bottom: 30px;
     text-align: center;
+    color: var(--secondary-color);
     background: var(--gradient-1);
     background-size: 200% 200%;
     -webkit-background-clip: text;
@@ -565,9 +567,11 @@ footer {
     }
 }
 
-/* Smooth Scrolling */
-html {
-    scroll-behavior: smooth;
+/* Smooth Scrolling - respects user preferences */
+@media (prefers-reduced-motion: no-preference) {
+    html {
+        scroll-behavior: smooth;
+    }
 }
 
 /* Custom Scrollbar */
