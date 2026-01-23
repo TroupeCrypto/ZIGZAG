@@ -2,13 +2,12 @@
   "name": "zigzag-hub",
   "version": "1.0.0",
   "description": "Deluxe and psychedelic hub space for music and digital artist ZIG ZAG",
-  "main": "index.html",
   "scripts": {
-    "start": "python3 -m http.server 8080",
-    "test": "echo \"No tests specified\" && exit 0",
-    "lint": "eslint scripts/**/*.js api/**/*.js",
-    "lint:fix": "eslint scripts/**/*.js api/**/*.js --fix",
-    "validate": "html-validate index.html"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "export": "next build && next export"
   },
   "keywords": [
     "music",
@@ -29,10 +28,19 @@
     "url": "https://github.com/TroupeCrypto/ZIGZAG/issues"
   },
   "homepage": "https://github.com/TroupeCrypto/ZIGZAG#readme",
+  "dependencies": {
+    "next": "^14.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
   "devDependencies": {
-    "eslint": "^8.0.0"
+    "eslint": "^8.0.0",
+    "eslint-config-next": "^14.0.0",
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=18.0.0"
   }
 }
