@@ -1,9 +1,3 @@
 {
-  "version": 2,
-  "rewrites": [
-    {
-      "source": "/((?!_next/|api/|.*\\..*).*)",
-      "destination": "/"
-    }
-  ]
+  "version": 2
 }
