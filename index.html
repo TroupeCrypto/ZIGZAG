@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZIG ZAG - Deluxe Hub Space</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/mimo.css">
+</head>
+<body>
+    <!-- Persistent Mimo Modal/Dashboard -->
+    <div id="mimo-container" class="mimo-container minimized">
+        <div class="mimo-header">
+            <div class="mimo-avatar">🎭</div>
+            <span class="mimo-title">Mimo Assistant</span>
+            <div class="mimo-controls">
+                <button id="mimo-minimize" class="mimo-btn">−</button>
+                <button id="mimo-maximize" class="mimo-btn">□</button>
+            </div>
+        </div>
+        <div class="mimo-content">
+            <div class="mimo-tabs">
+                <button class="mimo-tab active" data-tab="music">🎵 Music</button>
+                <button class="mimo-tab" data-tab="wallet">💳 Wallet</button>
+                <button class="mimo-tab" data-tab="nft">🖼️ NFT</button>
+                <button class="mimo-tab" data-tab="notifications">🔔 Alerts</button>
+            </div>
+            
+            <div class="mimo-panel active" id="music-panel">
+                <h3>Music Player</h3>
+                <div class="music-player">
+                    <div class="now-playing">No track loaded</div>
+                    <div class="player-controls">
+                        <button class="player-btn">⏮️</button>
+                        <button class="player-btn play-btn">▶️</button>
+                        <button class="player-btn">⏭️</button>
+                    </div>
+                    <input type="range" class="volume-slider" min="0" max="100" value="70">
+                </div>
+            </div>
+            
+            <div class="mimo-panel" id="wallet-panel">
+                <h3>Wallet</h3>
+                <div class="wallet-info">
+                    <div class="wallet-status">Not Connected</div>
+                    <button class="mimo-wallet-connect">Connect Wallet</button>
+                    <div class="wallet-balance" style="display:none;">
+                        <p>Balance: <span id="eth-balance">0 ETH</span></p>
+                        <p>Address: <span id="wallet-address">-</span></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mimo-panel" id="nft-panel">
+                <h3>Your NFTs</h3>
+                <div class="nft-gallery">
+                    <p class="empty-state">Connect wallet to view NFTs</p>
+                </div>
+            </div>
+            
+            <div class="mimo-panel" id="notifications-panel">
+                <h3>Notifications</h3>
+                <div class="notifications-list">
+                    <div class="notification-item">
+                        <span class="notif-icon">🎉</span>
+                        <span class="notif-text">Welcome to ZIG ZAG Hub!</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <header class="hero">
+            <div class="logo-container">
+                <h1 class="logo">ZIG ZAG</h1>
+                <p class="tagline">Digital Artist | Music Producer | Crypto Visionary</p>
+            </div>
+        </header>
+
+        <nav class="main-nav">
+            <a href="#music" class="nav-link">🎵 Music</a>
+            <a href="#art" class="nav-link">🎨 Art Gallery</a>
+            <a href="#crypto" class="nav-link">₿ Crypto</a>
+            <a href="#webdev" class="nav-link">💻 Web Dev</a>
+            <a href="#marketplace" class="nav-link">🛒 Marketplace</a>
+        </nav>
+
+        <main>
+            <!-- Music Section -->
+            <section id="music" class="section music-section">
+                <h2 class="section-title">Music Collection</h2>
+                <div class="content-grid">
+                    <div class="category-card">
+                        <h3>Singles</h3>
+                        <div class="item-list">
+                            <div class="music-item">
+                                <h4>Cosmic Waves</h4>
+                                <div class="actions">
+                                    <button class="btn-stream">Stream</button>
+                                    <button class="btn-download">Download</button>
+                                    <button class="btn-buy">Buy</button>
+                                </div>
+                            </div>
+                            <div class="music-item">
+                                <h4>Neon Dreams</h4>
+                                <div class="actions">
+                                    <button class="btn-stream">Stream</button>
+                                    <button class="btn-download">Download</button>
+                                    <button class="btn-buy">Buy</button>
+                                </div>
+                            </div>
+                            <div class="music-item">
+                                <h4>Electric Soul</h4>
+                                <div class="actions">
+                                    <button class="btn-stream">Stream</button>
+                                    <button class="btn-download">Download</button>
+                                    <button class="btn-buy">Buy</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="category-card">
+                        <h3>Mixtapes</h3>
+                        <div class="item-list">
+                            <div class="music-item">
+                                <h4>Summer Vibes 2025</h4>
+                                <div class="actions">
+                                    <button class="btn-stream">Stream</button>
+                                    <button class="btn-download">Download</button>
+                                    <button class="btn-buy">Buy</button>
+                                </div>
+                            </div>
+                            <div class="music-item">
+                                <h4>Midnight Sessions</h4>
+                                <div class="actions">
+                                    <button class="btn-stream">Stream</button>
+                                    <button class="btn-download">Download</button>
+                                    <button class="btn-buy">Buy</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="category-card">
+                        <h3>Albums</h3>
+                        <div class="item-list">
+                            <div class="music-item">
+                                <h4>Psychedelic Journey</h4>
+                                <div class="actions">
+                                    <button class="btn-stream">Stream</button>
+                                    <button class="btn-download">Download</button>
+                                    <button class="btn-buy">Buy</button>
+                                </div>
+                            </div>
+                            <div class="music-item">
+                                <h4>Digital Horizons</h4>
+                                <div class="actions">
+                                    <button class="btn-stream">Stream</button>
+                                    <button class="btn-download">Download</button>
+                                    <button class="btn-buy">Buy</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Art Gallery Section -->
+            <section id="art" class="section art-section">
+                <h2 class="section-title">Virtual Art Showcase</h2>
+                <div class="gallery-grid">
+                    <div class="art-piece">
+                        <div class="art-placeholder">
+                            <span>🌈</span>
+                        </div>
+                        <h4>Cosmic Mandala</h4>
+                        <button class="btn-view">View Full Size</button>
+                    </div>
+                    <div class="art-piece">
+                        <div class="art-placeholder">
+                            <span>🎨</span>
+                        </div>
+                        <h4>Digital Dreamscape</h4>
+                        <button class="btn-view">View Full Size</button>
+                    </div>
+                    <div class="art-piece">
+                        <div class="art-placeholder">
+                            <span>✨</span>
+                        </div>
+                        <h4>Neon Geometry</h4>
+                        <button class="btn-view">View Full Size</button>
+                    </div>
+                    <div class="art-piece">
+                        <div class="art-placeholder">
+                            <span>🔮</span>
+                        </div>
+                        <h4>Ethereal Visions</h4>
+                        <button class="btn-view">View Full Size</button>
+                    </div>
+                    <div class="art-piece">
+                        <div class="art-placeholder">
+                            <span>🌟</span>
+                        </div>
+                        <h4>Psychedelic Waves</h4>
+                        <button class="btn-view">View Full Size</button>
+                    </div>
+                    <div class="art-piece">
+                        <div class="art-placeholder">
+                            <span>💫</span>
+                        </div>
+                        <h4>Abstract Realms</h4>
+                        <button class="btn-view">View Full Size</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Crypto Section -->
+            <section id="crypto" class="section crypto-section">
+                <h2 class="section-title">Crypto Hub</h2>
+                
+                <!-- NFT Generator -->
+                <div class="nft-generator-section">
+                    <h3 class="subsection-title">NFT Generator</h3>
+                    <div class="generator-container">
+                        <div class="generator-canvas">
+                            <canvas id="nft-canvas" width="500" height="500"></canvas>
+                            <div class="generator-preview">
+                                <p>Generate unique NFTs with AI</p>
+                            </div>
+                        </div>
+                        <div class="generator-controls">
+                            <div class="control-group">
+                                <label>Art Style:</label>
+                                <select id="art-style">
+                                    <option>Psychedelic</option>
+                                    <option>Abstract</option>
+                                    <option>Geometric</option>
+                                    <option>Cyberpunk</option>
+                                </select>
+                            </div>
+                            <div class="control-group">
+                                <label>Color Scheme:</label>
+                                <select id="color-scheme">
+                                    <option>Rainbow</option>
+                                    <option>Neon</option>
+                                    <option>Pastel</option>
+                                    <option>Dark</option>
+                                </select>
+                            </div>
+                            <div class="control-group">
+                                <label>Complexity:</label>
+                                <input type="range" id="complexity" min="1" max="10" value="5">
+                            </div>
+                            <button class="btn-generate">Generate NFT</button>
+                            <button class="btn-mint">Mint to Blockchain</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Smart Contract Generator -->
+                <div class="contract-generator-section">
+                    <h3 class="subsection-title">Smart Contract Generator</h3>
+                    <div class="contract-form">
+                        <div class="form-row">
+                            <label>Contract Type:</label>
+                            <select id="contract-type">
+                                <option>ERC-721 (NFT)</option>
+                                <option>ERC-20 (Token)</option>
+                                <option>ERC-1155 (Multi-Token)</option>
+                                <option>Custom</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <label>Token Name:</label>
+                            <input type="text" id="token-name" placeholder="My Token">
+                        </div>
+                        <div class="form-row">
+                            <label>Token Symbol:</label>
+                            <input type="text" id="token-symbol" placeholder="MTK">
+                        </div>
+                        <button class="btn-generate-contract">Generate Contract</button>
+                        <div class="contract-output" style="display:none;">
+                            <pre><code id="contract-code"></code></pre>
+                            <button class="btn-copy-contract">Copy Code</button>
+                            <button class="btn-deploy-contract">Deploy to Network</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="crypto-grid">
+                    <div class="crypto-card">
+                        <h3>NFT Collections</h3>
+                        <p>Explore exclusive digital collectibles and NFT art pieces</p>
+                        <button class="btn-primary">Browse NFTs</button>
+                    </div>
+                    <div class="crypto-card">
+                        <h3>Wallet Connect</h3>
+                        <div id="wallet-status" class="wallet-status">Not Connected</div>
+                        <button id="connect-wallet" class="btn-primary">Connect Wallet</button>
+                    </div>
+                    <div class="crypto-card">
+                        <h3>Token Info</h3>
+                        <p>ZIG ZAG Token (ZZT) - Official artist token</p>
+                        <button class="btn-primary">Learn More</button>
+                    </div>
+                    <div class="crypto-card">
+                        <h3>Blockchain Portfolio</h3>
+                        <p>View on-chain assets and transactions</p>
+                        <button class="btn-primary">View Portfolio</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Web Development Section -->
+            <section id="webdev" class="section webdev-section">
+                <h2 class="section-title">Web Development</h2>
+                <div class="dev-container">
+                    <div class="code-showcase">
+                        <h3>Public Repositories</h3>
+                        <ul class="repo-list">
+                            <li>
+                                <a href="https://github.com/TroupeCrypto/ZIGZAG" target="_blank">
+                                    🔓 ZIGZAG Hub - This Website
+                                </a>
+                            </li>
+                            <li>
+                                <span>🔓 ZIG-ZAG-Tools - Utility Scripts</span>
+                            </li>
+                            <li>
+                                <span>🔓 Psychedelic-UI - Design System</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="code-showcase">
+                        <h3>Private Projects</h3>
+                        <ul class="repo-list">
+                            <li><span>🔒 Advanced Audio Engine</span></li>
+                            <li><span>🔒 Crypto Trading Bots</span></li>
+                            <li><span>🔒 NFT Minting Platform</span></li>
+                        </ul>
+                    </div>
+                    <div class="skills-grid">
+                        <div class="skill-tag">JavaScript</div>
+                        <div class="skill-tag">Python</div>
+                        <div class="skill-tag">Solidity</div>
+                        <div class="skill-tag">Web3</div>
+                        <div class="skill-tag">React</div>
+                        <div class="skill-tag">Node.js</div>
+                        <div class="skill-tag">Smart Contracts</div>
+                        <div class="skill-tag">API Development</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Marketplace Section -->
+            <section id="marketplace" class="section marketplace-section">
+                <h2 class="section-title">Marketplaces</h2>
+                
+                <!-- Public vs Private Toggle -->
+                <div class="marketplace-toggle">
+                    <button class="toggle-btn active" data-type="public">🔓 Public Marketplace</button>
+                    <button class="toggle-btn" data-type="private">🔒 Private IP</button>
+                </div>
+                
+                <div class="marketplace-grid public-marketplace">
+                    <div class="marketplace-card">
+                        <h3>🎵 Music Store</h3>
+                        <p>Purchase and download exclusive tracks, beats, and albums</p>
+                        <ul>
+                            <li>High-quality WAV/MP3</li>
+                            <li>Exclusive releases</li>
+                            <li>Instant download</li>
+                        </ul>
+                        <button class="btn-marketplace">Browse Music</button>
+                    </div>
+                    <div class="marketplace-card">
+                        <h3>🎨 Art Marketplace</h3>
+                        <p>Buy digital art prints and commissions</p>
+                        <ul>
+                            <li>Custom designs</li>
+                            <li>High-res downloads</li>
+                            <li>Commercial licenses</li>
+                        </ul>
+                        <button class="btn-marketplace">Browse Art</button>
+                    </div>
+                    <div class="marketplace-card">
+                        <h3>🏪 NFT Marketplace</h3>
+                        <p>Trade exclusive NFT collections on blockchain</p>
+                        <ul>
+                            <li>OpenSea</li>
+                            <li>Rarible</li>
+                            <li>Foundation</li>
+                        </ul>
+                        <button class="btn-marketplace">View NFTs</button>
+                    </div>
+                    <div class="marketplace-card">
+                        <h3>💼 Services</h3>
+                        <p>Commission custom work and collaborations</p>
+                        <ul>
+                            <li>Music production</li>
+                            <li>Graphic design</li>
+                            <li>Web development</li>
+                        </ul>
+                        <button class="btn-marketplace">Get Quote</button>
+                    </div>
+                </div>
+                
+                <!-- Private IP Marketplace (hidden by default) -->
+                <div class="marketplace-grid private-marketplace" style="display:none;">
+                    <div class="marketplace-card private-card">
+                        <h3>🔐 Proprietary NFT Engine</h3>
+                        <p>Advanced NFT generation algorithms and intellectual property</p>
+                        <ul>
+                            <li>AI-powered generation</li>
+                            <li>Custom smart contracts</li>
+                            <li>Exclusive access</li>
+                        </ul>
+                        <button class="btn-marketplace">Request Access</button>
+                    </div>
+                    <div class="marketplace-card private-card">
+                        <h3>🔐 Trading Algorithms</h3>
+                        <p>Proprietary crypto trading bots and strategies</p>
+                        <ul>
+                            <li>Advanced ML models</li>
+                            <li>Real-time analysis</li>
+                            <li>Premium features</li>
+                        </ul>
+                        <button class="btn-marketplace">Request Access</button>
+                    </div>
+                    <div class="marketplace-card private-card">
+                        <h3>🔐 Custom Solutions</h3>
+                        <p>Bespoke development and consulting</p>
+                        <ul>
+                            <li>One-on-one consultation</li>
+                            <li>Tailored development</li>
+                            <li>Full support</li>
+                        </ul>
+                        <button class="btn-marketplace">Get Quote</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2026 ZIG ZAG. All rights reserved.</p>
+            <div class="social-links">
+                <a href="#" class="social-link">Twitter</a>
+                <a href="#" class="social-link">Instagram</a>
+                <a href="#" class="social-link">Spotify</a>
+                <a href="#" class="social-link">GitHub</a>
+            </div>
+        </footer>
+    </div>
+
+    <script src="scripts/main.js"></script>
+    <script src="scripts/mimo.js"></script>
+    <script src="scripts/nft-generator.js"></script>
+    <script src="scripts/contract-generator.js"></script>
+</body>
+</html>

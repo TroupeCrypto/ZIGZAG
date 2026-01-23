@@ -1,0 +1,423 @@
+/**
+ * ZIG ZAG Hub - Interactive Features
+ * 
+ * Main application logic for the ZIG ZAG deluxe hub space.
+ * Handles initialization of all interactive features including
+ * wallet connection, music players, art gallery, marketplace, and navigation.
+ * 
+ * @author ZIG ZAG
+ * @version 1.0.0
+ * @license MIT
+ */
+
+/**
+ * Initialize all application features when DOM is loaded
+ * @listens DOMContentLoaded
+ */
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🎨 ZIG ZAG Hub Loaded');
+    
+    // Initialize features
+    initializeWalletConnect();
+    initializeMusicPlayers();
+    initializeArtGallery();
+    initializeMarketplace();
+    initializeSmoothScrolling();
+    
+    // Add entrance animation
+    document.body.style.opacity = '0';
+    setTimeout(() => {
+        document.body.style.transition = 'opacity 1s ease-in';
+        document.body.style.opacity = '1';
+    }, 100);
+});
+
+/**
+ * Initialize wallet connection functionality
+ * Handles MetaMask detection and connection simulation
+ * @function initializeWalletConnect
+ * @returns {void}
+ */
+function initializeWalletConnect() {
+    const connectButton = document.getElementById('connect-wallet');
+    const walletStatus = document.getElementById('wallet-status');
+    
+    if (!connectButton || !walletStatus) return;
+    
+    connectButton.addEventListener('click', async function() {
+        // Simulate wallet connection (in production, use Web3.js or ethers.js)
+        walletStatus.textContent = 'Connecting...';
+        connectButton.disabled = true;
+        
+        setTimeout(() => {
+            if (typeof window.ethereum !== 'undefined') {
+                walletStatus.textContent = 'Connected: 0x1234...5678';
+                walletStatus.style.color = '#00ff00';
+                connectButton.textContent = 'Disconnect';
+                connectButton.disabled = false;
+                showNotification('Wallet connected successfully! 🎉');
+            } else {
+                walletStatus.textContent = 'MetaMask not found';
+                walletStatus.style.color = '#ff0000';
+                connectButton.disabled = false;
+                showNotification('Please install MetaMask to connect', 'error');
+            }
+        }, 1500);
+    });
+}
+
+/**
+ * Initialize music player controls and interactions
+ * Sets up event listeners for stream, download, and buy buttons
+ * @function initializeMusicPlayers
+ * @returns {void}
+ */
+function initializeMusicPlayers() {
+    const streamButtons = document.querySelectorAll('.btn-stream');
+    const downloadButtons = document.querySelectorAll('.btn-download');
+    const buyButtons = document.querySelectorAll('.btn-buy');
+    
+    streamButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const trackName = this.closest('.music-item').querySelector('h4').textContent;
+            showNotification(`🎵 Streaming: ${trackName}`);
+            animateButton(this);
+        });
+    });
+    
+    downloadButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const trackName = this.closest('.music-item').querySelector('h4').textContent;
+            showNotification(`⬇️ Downloading: ${trackName}`);
+            animateButton(this);
+        });
+    });
+    
+    buyButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const trackName = this.closest('.music-item').querySelector('h4').textContent;
+            showNotification(`🛒 Opening purchase page for: ${trackName}`);
+            animateButton(this);
+        });
+    });
+}
+
+/**
+ * Initialize art gallery interactions
+ * Sets up modal viewing for artwork pieces
+ * @function initializeArtGallery
+ * @returns {void}
+ */
+function initializeArtGallery() {
+    const viewButtons = document.querySelectorAll('.btn-view');
+    
+    viewButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const artName = this.closest('.art-piece').querySelector('h4').textContent;
+            showArtModal(artName);
+            animateButton(this);
+        });
+    });
+}
+
+/**
+ * Initialize marketplace features including public/private toggle
+ * Handles marketplace button interactions and toggle functionality
+ * @function initializeMarketplace
+ * @returns {void}
+ */
+function initializeMarketplace() {
+    const marketplaceButtons = document.querySelectorAll('.btn-marketplace');
+    const toggleBtns = document.querySelectorAll('.toggle-btn');
+    const publicMarketplace = document.querySelector('.public-marketplace');
+    const privateMarketplace = document.querySelector('.private-marketplace');
+    
+    // Toggle between public and private marketplaces
+    toggleBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const type = this.dataset.type;
+            
+            toggleBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            
+            if (type === 'public') {
+                publicMarketplace.style.display = 'grid';
+                privateMarketplace.style.display = 'none';
+                if (window.mimoNotify) {
+                    window.mimoNotify('🔓', 'Viewing Public Marketplace');
+                }
+            } else {
+                publicMarketplace.style.display = 'none';
+                privateMarketplace.style.display = 'grid';
+                if (window.mimoNotify) {
+                    window.mimoNotify('🔒', 'Viewing Private IP Marketplace');
+                }
+            }
+        });
+    });
+    
+    marketplaceButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const marketplace = this.closest('.marketplace-card').querySelector('h3').textContent;
+            showNotification(`Opening ${marketplace}...`);
+            animateButton(this);
+            
+            if (window.mimoNotify) {
+                window.mimoNotify('🛒', `Opening ${marketplace}`);
+            }
+        });
+    });
+    
+    // Initialize crypto buttons
+    const cryptoButtons = document.querySelectorAll('.crypto-card .btn-primary');
+    cryptoButtons.forEach((button, index) => {
+        button.addEventListener('click', function() {
+            const action = this.closest('.crypto-card').querySelector('h3').textContent;
+            showNotification(`Loading ${action}...`);
+            animateButton(this);
+            
+            if (window.mimoNotify) {
+                window.mimoNotify('₿', `Loading ${action}`);
+            }
+        });
+    });
+}
+
+/**
+ * Initialize smooth scrolling for navigation links
+ * Adds smooth scroll behavior and highlight effects
+ * @function initializeSmoothScrolling
+ * @returns {void}
+ */
+function initializeSmoothScrolling() {
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const targetSection = document.querySelector(targetId);
+            
+            if (targetSection) {
+                targetSection.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+                
+                // Add highlight effect
+                targetSection.style.transform = 'scale(1.02)';
+                setTimeout(() => {
+                    targetSection.style.transform = 'scale(1)';
+                }, 300);
+            }
+        });
+    });
+}
+
+/**
+ * Display a notification message to the user
+ * @function showNotification
+ * @param {string} message - The notification message
+ * @param {string} [type='success'] - Notification type ('success' or 'error')
+ * @returns {void}
+ */
+function showNotification(message, type = 'success') {
+    // Remove existing notification if any
+    const existingNotif = document.querySelector('.notification');
+    if (existingNotif) {
+        existingNotif.remove();
+    }
+    
+    const notification = document.createElement('div');
+    notification.className = 'notification';
+    notification.textContent = message;
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${type === 'error' ? 'linear-gradient(135deg, #ff0000, #ff6b6b)' : 'linear-gradient(135deg, #00ff00, #00ffff)'};
+        color: white;
+        padding: 15px 25px;
+        border-radius: 10px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        z-index: 10000;
+        font-weight: bold;
+        animation: slideIn 0.3s ease-out;
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease-out';
+        setTimeout(() => notification.remove(), 300);
+    }, 3000);
+}
+
+/**
+ * Animate a button with scale effect
+ * @function animateButton
+ * @param {HTMLElement} button - The button element to animate
+ * @returns {void}
+ */
+function animateButton(button) {
+    button.style.transform = 'scale(0.95)';
+    setTimeout(() => {
+        button.style.transform = 'scale(1)';
+    }, 150);
+}
+
+/**
+ * Display art piece in a modal overlay
+ * @function showArtModal
+ * @param {string} artName - Name of the art piece to display
+ * @returns {void}
+ */
+function showArtModal(artName) {
+    const modal = document.createElement('div');
+    modal.className = 'art-modal';
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.95);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        animation: fadeIn 0.3s ease-out;
+    `;
+    
+    modal.innerHTML = `
+        <div style="
+            background: linear-gradient(135deg, #ff00ff, #00ffff);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 90vw;
+            max-height: 90vh;
+            animation: zoomIn 0.3s ease-out;
+            overflow: auto;
+        ">
+            <h2 style="margin-bottom: 20px; font-size: 2.5rem;">${artName}</h2>
+            <div style="
+                width: 100%;
+                max-width: 600px;
+                height: auto;
+                aspect-ratio: 1;
+                max-height: 60vh;
+                background: linear-gradient(45deg, #ff0080, #00ff80, #0080ff);
+                border-radius: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 10rem;
+                margin: 20px auto;
+            ">🎨</div>
+            <p style="margin: 20px 0; font-size: 1.2rem;">High-resolution artwork would be displayed here</p>
+            <button onclick="this.closest('.art-modal').remove()" style="
+                padding: 15px 40px;
+                background: white;
+                color: black;
+                border: none;
+                border-radius: 25px;
+                font-weight: bold;
+                cursor: pointer;
+                font-size: 1.1rem;
+            ">Close</button>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            modal.remove();
+        }
+    });
+}
+
+// Add CSS animations
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+        from {
+            transform: translateX(400px);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes slideOut {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(400px);
+            opacity: 0;
+        }
+    }
+    
+    @keyframes zoomIn {
+        from {
+            transform: scale(0.5);
+            opacity: 0;
+        }
+        to {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+`;
+document.head.appendChild(style);
+
+// Easter egg: Konami code
+let konamiCode = [];
+const konamiSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
+
+document.addEventListener('keydown', function(e) {
+    konamiCode.push(e.code || e.key);
+    if (konamiCode.length > konamiSequence.length) {
+        konamiCode.shift();
+    }
+    
+    // Check if sequences match
+    let matches = true;
+    for (let i = 0; i < konamiSequence.length; i++) {
+        if (konamiCode[i] !== konamiSequence[i]) {
+            matches = false;
+            break;
+        }
+    }
+    
+    if (matches && konamiCode.length === konamiSequence.length) {
+        activateEasterEgg();
+        konamiCode = [];
+    }
+});
+
+function activateEasterEgg() {
+    document.body.style.animation = 'rainbow 2s infinite';
+    showNotification('🎉 PSYCHEDELIC MODE ACTIVATED! 🌈');
+    
+    const rainbowStyle = document.createElement('style');
+    rainbowStyle.textContent = `
+        @keyframes rainbow {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+    `;
+    document.head.appendChild(rainbowStyle);
+    
+    setTimeout(() => {
+        document.body.style.animation = '';
+        rainbowStyle.remove();
+    }, 10000);
+}
+
+console.log('💡 Tip: Try the Konami code for a surprise!');

@@ -1,0 +1,334 @@
+/* Mimo Persistent Modal/Dashboard Styles */
+
+.mimo-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 400px;
+    max-width: 90vw;
+    background: linear-gradient(135deg, rgba(20, 20, 40, 0.95), rgba(40, 20, 60, 0.95));
+    border: 2px solid rgba(255, 0, 255, 0.5);
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(255, 0, 255, 0.4);
+    z-index: 10000;
+    backdrop-filter: blur(20px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+
+.mimo-container.minimized {
+    width: 200px;
+    height: 60px;
+}
+
+.mimo-container.minimized .mimo-content {
+    display: none;
+}
+
+.mimo-container.maximized {
+    width: 500px;
+    height: 600px;
+    bottom: 50%;
+    right: 50%;
+    transform: translate(50%, 50%);
+}
+
+.mimo-header {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background: linear-gradient(135deg, rgba(255, 0, 255, 0.2), rgba(0, 255, 255, 0.2));
+    border-bottom: 1px solid rgba(255, 0, 255, 0.3);
+    cursor: move;
+}
+
+.mimo-avatar {
+    font-size: 2rem;
+    margin-right: 10px;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+.mimo-title {
+    flex: 1;
+    color: var(--light-text);
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.mimo-controls {
+    display: flex;
+    gap: 5px;
+}
+
+.mimo-btn {
+    width: 30px;
+    height: 30px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 0.2s;
+}
+
+.mimo-btn:hover {
+    background: rgba(255, 0, 255, 0.3);
+    transform: scale(1.1);
+}
+
+.mimo-content {
+    padding: 20px;
+}
+
+.mimo-tabs {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 15px;
+    overflow-x: auto;
+}
+
+.mimo-tab {
+    flex: 1;
+    min-width: 80px;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+}
+
+.mimo-tab:hover {
+    background: rgba(255, 0, 255, 0.2);
+    color: white;
+}
+
+.mimo-tab.active {
+    background: linear-gradient(135deg, #ff00ff, #00ffff);
+    color: white;
+    border-color: transparent;
+}
+
+.mimo-panel {
+    display: none;
+    animation: fadeIn 0.3s;
+}
+
+.mimo-panel.active {
+    display: block;
+}
+
+.mimo-panel h3 {
+    color: var(--secondary-color);
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+/* Music Player Styles */
+.music-player {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.now-playing {
+    color: var(--light-text);
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.player-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.player-btn {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #ff00ff, #00ffff);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.player-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 5px 15px rgba(255, 0, 255, 0.5);
+}
+
+.player-btn.play-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+}
+
+.volume-slider {
+    width: 100%;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    outline: none;
+}
+
+.volume-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    background: linear-gradient(135deg, #ff00ff, #00ffff);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* Wallet Styles */
+.wallet-info {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.wallet-status {
+    color: var(--secondary-color);
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.mimo-wallet-connect {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #ff00ff, #00ffff);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.mimo-wallet-connect:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(255, 0, 255, 0.5);
+}
+
+.wallet-balance {
+    margin-top: 15px;
+    padding: 10px;
+    background: rgba(0, 255, 0, 0.1);
+    border-radius: 5px;
+}
+
+.wallet-balance p {
+    color: var(--light-text);
+    margin: 5px 0;
+    font-size: 0.9rem;
+}
+
+/* NFT Gallery Styles */
+.nft-gallery {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.nft-item {
+    aspect-ratio: 1;
+    background: linear-gradient(135deg, #ff00ff, #00ffff);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.nft-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(255, 0, 255, 0.5);
+}
+
+.empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);
+    padding: 20px;
+}
+
+/* Notifications Styles */
+.notifications-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.notification-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-left: 3px solid var(--primary-color);
+    border-radius: 5px;
+    margin-bottom: 10px;
+    animation: slideIn 0.3s;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.notif-icon {
+    font-size: 1.5rem;
+}
+
+.notif-text {
+    flex: 1;
+    color: var(--light-text);
+    font-size: 0.9rem;
+}
+
+/* Draggable functionality */
+.mimo-container.dragging {
+    cursor: move;
+    opacity: 0.8;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .mimo-container {
+        width: calc(100vw - 40px);
+        right: 20px;
+    }
+    
+    .mimo-container.maximized {
+        width: calc(100vw - 40px);
+        height: calc(100vh - 100px);
+        bottom: 50px;
+        right: 20px;
+        transform: none;
+    }
+    
+    .nft-gallery {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}

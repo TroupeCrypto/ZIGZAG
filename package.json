@@ -1,0 +1,38 @@
+{
+  "name": "zigzag-hub",
+  "version": "1.0.0",
+  "description": "Deluxe and psychedelic hub space for music and digital artist ZIG ZAG",
+  "main": "index.html",
+  "scripts": {
+    "start": "python3 -m http.server 8080",
+    "test": "echo \"No tests specified\" && exit 0",
+    "lint": "eslint scripts/**/*.js api/**/*.js",
+    "lint:fix": "eslint scripts/**/*.js api/**/*.js --fix",
+    "validate": "html-validate index.html"
+  },
+  "keywords": [
+    "music",
+    "art",
+    "nft",
+    "crypto",
+    "web3",
+    "digital-art",
+    "blockchain"
+  ],
+  "author": "ZIG ZAG <zigzag@troupecrypto.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TroupeCrypto/ZIGZAG.git"
+  },
+  "bugs": {
+    "url": "https://github.com/TroupeCrypto/ZIGZAG/issues"
+  },
+  "homepage": "https://github.com/TroupeCrypto/ZIGZAG#readme",
+  "devDependencies": {
+    "eslint": "^8.0.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
