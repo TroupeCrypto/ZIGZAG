@@ -55,7 +55,7 @@ export default function ArtGallery() {
             zIndex: 9999,
             animation: 'fadeIn 0.3s ease-out'
           }}
-          onClick={(e) => e.target.className === 'art-modal' && closeModal()}
+          onClick={(e) => e.target === e.currentTarget && closeModal()}
         >
           <div style={{
             background: 'linear-gradient(135deg, #ff00ff, #00ffff)',
@@ -96,19 +96,6 @@ export default function ArtGallery() {
           </div>
         </div>
       )}
-
-      <style jsx>{`
-        @keyframes zoomIn {
-          from {
-            transform: scale(0.5);
-            opacity: 0;
-          }
-          to {
-            transform: scale(1);
-            opacity: 1;
-          }
-        }
-      `}</style>
     </>
   )
 }

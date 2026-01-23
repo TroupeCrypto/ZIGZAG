@@ -14,14 +14,6 @@ export default function CryptoHub() {
   const [walletConnected, setWalletConnected] = useState(false)
   const [walletStatus, setWalletStatus] = useState('Not Connected')
 
-  useEffect(() => {
-    const canvas = canvasRef.current
-    if (canvas) {
-      const ctx = canvas.getContext('2d')
-      drawPlaceholder(ctx, canvas)
-    }
-  }, [])
-
   const drawPlaceholder = (ctx, canvas) => {
     const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height)
     gradient.addColorStop(0, '#ff00ff')
@@ -37,6 +29,14 @@ export default function CryptoHub() {
     ctx.textBaseline = 'middle'
     ctx.fillText('Click Generate to create NFT', canvas.width / 2, canvas.height / 2)
   }
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (canvas) {
+      const ctx = canvas.getContext('2d')
+      drawPlaceholder(ctx, canvas)
+    }
+  }, [])
 
   const generateNFT = () => {
     const canvas = canvasRef.current
@@ -192,7 +192,7 @@ contract ${tokenSymbol} {
                 min="1" 
                 max="10" 
                 value={complexity}
-                onChange={(e) => setComplexity(e.target.value)}
+                onChange={(e) => setComplexity(Number(e.target.value))}
               />
             </div>
             <button className="btn-generate" onClick={generateNFT}>Generate NFT</button>

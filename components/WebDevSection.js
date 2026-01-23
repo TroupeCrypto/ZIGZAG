@@ -1,3 +1,5 @@
+'use client'
+
 export default function WebDevSection() {
   return (
     <section id="webdev" className="section webdev-section">

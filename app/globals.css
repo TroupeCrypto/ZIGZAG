@@ -175,6 +175,17 @@ body::before {
     }
 }
 
+@keyframes zoomIn {
+    from {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
 .section-title {
     font-size: 2.5rem;
     margin-bottom: 30px;

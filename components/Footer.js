@@ -3,10 +3,10 @@ export default function Footer() {
     <footer>
       <p>&copy; 2026 ZIG ZAG. All rights reserved.</p>
       <div className="social-links">
-        <a href="#" className="social-link">Twitter</a>
-        <a href="#" className="social-link">Instagram</a>
-        <a href="#" className="social-link">Spotify</a>
-        <a href="#" className="social-link">GitHub</a>
+        <span className="social-link">Twitter</span>
+        <span className="social-link">Instagram</span>
+        <span className="social-link">Spotify</span>
+        <span className="social-link">GitHub</span>
       </div>
     </footer>
   )

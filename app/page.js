@@ -14,13 +14,6 @@ import Footer from '../components/Footer'
 export default function Home() {
   useEffect(() => {
     console.log('🎨 ZIG ZAG Hub Loaded')
-    
-    // Add entrance animation
-    document.body.style.opacity = '0'
-    setTimeout(() => {
-      document.body.style.transition = 'opacity 1s ease-in'
-      document.body.style.opacity = '1'
-    }, 100)
   }, [])
 
   return (

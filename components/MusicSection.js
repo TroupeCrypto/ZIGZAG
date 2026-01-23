@@ -1,7 +1,5 @@
 'use client'
 
-import { useState } from 'react'
-
 export default function MusicSection() {
   const showNotification = (message) => {
     // Simple notification - in production, use a toast library

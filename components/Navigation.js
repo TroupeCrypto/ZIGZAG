@@ -1,3 +1,5 @@
+'use client'
+
 export default function Navigation() {
   const handleClick = (e, targetId) => {
     e.preventDefault()
