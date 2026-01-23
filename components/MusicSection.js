@@ -4,8 +4,7 @@ import { useState } from 'react'
 
 export default function MusicSection() {
   const showNotification = (message) => {
-    // You can implement this as a toast notification system
-    console.log(message)
+    // Simple notification - in production, use a toast library
     alert(message)
   }
 

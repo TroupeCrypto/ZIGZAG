@@ -73,30 +73,28 @@ export default function MimoAssistant() {
     })
   }
 
-  const handleMouseMove = (e) => {
-    if (isDragging) {
+  useEffect(() => {
+    if (!isDragging) return
+
+    const handleMouseMove = (e) => {
       setPosition({
         x: e.clientX - dragStart.x,
         y: e.clientY - dragStart.y
       })
     }
-  }
 
-  const handleMouseUp = () => {
-    setIsDragging(false)
-  }
-
-  useEffect(() => {
-    if (isDragging) {
-      document.addEventListener('mousemove', handleMouseMove)
-      document.addEventListener('mouseup', handleMouseUp)
-      return () => {
-        document.removeEventListener('mousemove', handleMouseMove)
-        document.removeEventListener('mouseup', handleMouseUp)
-      }
+    const handleMouseUp = () => {
+      setIsDragging(false)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isDragging, dragStart])
+
+    document.addEventListener('mousemove', handleMouseMove)
+    document.addEventListener('mouseup', handleMouseUp)
+    
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove)
+      document.removeEventListener('mouseup', handleMouseUp)
+    }
+  }, [isDragging, dragStart, position])
 
   const containerStyle = {
     transform: !isMaximized ? `translate(${position.x}px, ${position.y}px)` : undefined
