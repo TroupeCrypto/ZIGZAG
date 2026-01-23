@@ -45,20 +45,34 @@ export default function CryptoHub() {
     const ctx = canvas.getContext('2d')
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     
-    // Simple generative art
+    // Optimized generative art with requestAnimationFrame
     const colors = getColorScheme(colorScheme)
-    for (let i = 0; i < complexity * 10; i++) {
-      ctx.fillStyle = colors[Math.floor(Math.random() * colors.length)]
-      ctx.globalAlpha = 0.5
-      const x = Math.random() * canvas.width
-      const y = Math.random() * canvas.height
-      const size = Math.random() * 100
-      ctx.beginPath()
-      ctx.arc(x, y, size, 0, Math.PI * 2)
-      ctx.fill()
+    const shapes = complexity * 10
+    
+    // Draw in batches to avoid blocking
+    let i = 0
+    const drawBatch = () => {
+      const batchSize = Math.min(20, shapes - i)
+      for (let j = 0; j < batchSize; j++) {
+        ctx.fillStyle = colors[Math.floor(Math.random() * colors.length)]
+        ctx.globalAlpha = 0.5
+        const x = Math.random() * canvas.width
+        const y = Math.random() * canvas.height
+        const size = Math.random() * 100
+        ctx.beginPath()
+        ctx.arc(x, y, size, 0, Math.PI * 2)
+        ctx.fill()
+      }
+      i += batchSize
+      
+      if (i < shapes) {
+        requestAnimationFrame(drawBatch)
+      } else {
+        alert(`Generated ${artStyle} NFT with ${colorScheme} colors!\n\n⚠️ Demo: This is a simulated NFT generator.`)
+      }
     }
     
-    alert(`Generated ${artStyle} NFT with ${colorScheme} colors!`)
+    requestAnimationFrame(drawBatch)
   }
 
   const getColorScheme = (scheme) => {
@@ -72,7 +86,7 @@ export default function CryptoHub() {
   }
 
   const mintNFT = () => {
-    alert('Minting NFT to blockchain... (Demo)')
+    alert('⚠️ Demo Mode: Minting NFT to blockchain...\n\nNote: This is a simulated minting process for demonstration purposes only.')
   }
 
   const generateContract = () => {
@@ -130,11 +144,11 @@ contract ${tokenSymbol} {
 
   const copyContract = () => {
     navigator.clipboard.writeText(getContractCode())
-    alert('Contract code copied to clipboard!')
+    alert('Contract code copied to clipboard!\n\n⚠️ Demo: Please review and test before deployment.')
   }
 
   const deployContract = () => {
-    alert('Deploying contract to network... (Demo)')
+    alert('⚠️ Demo Mode: Deploying contract to network...\n\nNote: This is a simulated deployment for demonstration purposes only.')
   }
 
   const connectWallet = async () => {
@@ -143,10 +157,10 @@ contract ${tokenSymbol} {
       if (typeof window !== 'undefined' && typeof window.ethereum !== 'undefined') {
         setWalletStatus('Connected: 0x1234...5678')
         setWalletConnected(true)
-        alert('Wallet connected successfully! 🎉')
+        alert('⚠️ Demo Mode: Wallet connected successfully! 🎉\n\nNote: This is a simulated connection for demonstration purposes only.')
       } else {
         setWalletStatus('MetaMask not found')
-        alert('Please install MetaMask to connect')
+        alert('Please install MetaMask to connect.\n\nNote: This is currently a demo feature.')
       }
     }, 1500)
   }
@@ -154,6 +168,9 @@ contract ${tokenSymbol} {
   return (
     <section id="crypto" className="section crypto-section">
       <h2 className="section-title">Crypto Hub</h2>
+      <div style={{ textAlign: 'center', marginBottom: '20px', padding: '10px', background: 'rgba(255, 193, 7, 0.1)', borderRadius: '10px', border: '1px solid rgba(255, 193, 7, 0.3)' }}>
+        <p style={{ margin: 0, color: '#ffc107' }}>⚠️ Demo Mode: Features shown are simulated for demonstration purposes</p>
+      </div>
       
       {/* NFT Generator */}
       <div className="nft-generator-section">
@@ -249,7 +266,7 @@ contract ${tokenSymbol} {
         <div className="crypto-card">
           <h3>NFT Collections</h3>
           <p>Explore exclusive digital collectibles and NFT art pieces</p>
-          <button className="btn-primary" onClick={() => alert('Browse NFTs')}>Browse NFTs</button>
+          <button className="btn-primary" onClick={() => alert('Browse NFTs (Demo feature)')}>Browse NFTs</button>
         </div>
         <div className="crypto-card">
           <h3>Wallet Connect</h3>
@@ -259,18 +276,18 @@ contract ${tokenSymbol} {
             className="btn-primary"
             onClick={connectWallet}
           >
-            {walletConnected ? 'Disconnect' : 'Connect Wallet'}
+            {walletConnected ? 'Disconnect (Demo)' : 'Connect Wallet (Demo)'}
           </button>
         </div>
         <div className="crypto-card">
           <h3>Token Info</h3>
           <p>ZIG ZAG Token (ZZT) - Official artist token</p>
-          <button className="btn-primary" onClick={() => alert('Learn More')}>Learn More</button>
+          <button className="btn-primary" onClick={() => alert('Learn More (Demo feature)')}>Learn More</button>
         </div>
         <div className="crypto-card">
           <h3>Blockchain Portfolio</h3>
           <p>View on-chain assets and transactions</p>
-          <button className="btn-primary" onClick={() => alert('View Portfolio')}>View Portfolio</button>
+          <button className="btn-primary" onClick={() => alert('View Portfolio (Demo feature)')}>View Portfolio</button>
         </div>
       </div>
     </section>

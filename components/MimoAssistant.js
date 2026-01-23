@@ -43,14 +43,14 @@ export default function MimoAssistant() {
     setWalletStatus('Connecting...')
     setTimeout(() => {
       if (typeof window !== 'undefined' && typeof window.ethereum !== 'undefined') {
-        setWalletStatus('Connected')
+        setWalletStatus('Connected (Demo)')
         setWalletConnected(true)
-        setWalletBalance({ eth: '2.45 ETH', address: '0x1234...5678' })
+        setWalletBalance({ eth: '2.45 ETH (Demo)', address: '0x1234...5678' })
         loadUserNFTs()
-        addNotification('💳', 'Wallet connected successfully')
+        addNotification('💳', '⚠️ Demo wallet connected')
       } else {
         setWalletStatus('MetaMask not found')
-        addNotification('⚠️', 'Please install MetaMask')
+        addNotification('⚠️', 'Please install MetaMask (Demo mode)')
       }
     }, 1500)
   }
