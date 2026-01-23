@@ -176,10 +176,8 @@ contract ${symbol} is Ownable {
             Math.floor(Math.random() * 16).toString(16)).join('');
         
         if (window.mimoNotify) {
-            window.mimoNotify('🚀', 'Contract deployed successfully!');
+            window.mimoNotify('🚀', `Contract deployed to ${contractAddress.substring(0, 10)}...`);
         }
-        
-        alert(`Contract Deployed!\n\nAddress: ${contractAddress}\n\nNetwork: Ethereum Goerli Testnet\n\nYour smart contract has been deployed!`);
         
         deployBtn.textContent = 'Deploy to Network';
         deployBtn.disabled = false;

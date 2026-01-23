@@ -8,9 +8,12 @@ router.post('/generate', async (req, res) => {
     try {
         const { style, colors, complexity } = req.body;
         
+        // Generate unique ID
+        const id = generateUniqueId();
+        
         // NFT generation logic here
         const nftData = {
-            id: generateUniqueId(),
+            id: id,
             style,
             colors,
             complexity,
@@ -55,7 +58,13 @@ function generateUniqueId() {
 }
 
 async function mintToBlockchain(nftId, walletAddress) {
-    // Implement blockchain minting
+    // TODO: Implement actual blockchain minting using Web3.js or ethers.js
+    // This is a mock implementation for demonstration
+    // In production, this should:
+    // 1. Connect to Ethereum/Polygon network
+    // 2. Call smart contract mint function with nftId
+    // 3. Send transaction from/to walletAddress
+    // 4. Return actual transaction hash
     return '0x' + Array.from({length: 64}, () => 
         Math.floor(Math.random() * 16).toString(16)).join('');
 }

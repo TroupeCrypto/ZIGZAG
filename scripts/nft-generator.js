@@ -212,12 +212,11 @@ document.addEventListener('DOMContentLoaded', function() {
         await new Promise(resolve => setTimeout(resolve, 2000));
         
         const imageData = canvas.toDataURL('image/png');
+        const tokenId = Math.floor(Math.random() * 10000);
         
         if (window.mimoNotify) {
-            window.mimoNotify('✅', 'NFT minted successfully!');
+            window.mimoNotify('✅', `NFT minted successfully! Token ID: #${tokenId}`);
         }
-        
-        alert('NFT Minted!\n\nToken ID: #' + Math.floor(Math.random() * 10000) + '\n\nYour NFT has been minted to the blockchain!');
         
         mintBtn.textContent = 'Mint to Blockchain';
         mintBtn.disabled = false;
