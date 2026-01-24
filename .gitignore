@@ -12,3 +12,4 @@ tests/coverage/
 .nyc_output/
 .next/
 out/
+generated/
