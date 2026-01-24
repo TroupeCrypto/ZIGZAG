@@ -1,7 +1,7 @@
 /**
- * Mimo Persistent Modal/Dashboard Functionality
+ * PSILO Persistent Modal/Dashboard Functionality
  * 
- * Handles the floating Mimo assistant modal that persists across all pages.
+ * Handles the floating PSILO assistant modal that persists across all pages.
  * Features include minimize/maximize, dragging, tab switching, music player,
  * wallet connection, NFT gallery, and notifications.
  * 
@@ -11,39 +11,39 @@
  */
 
 /**
- * Initialize Mimo modal functionality when DOM is loaded
+ * Initialize PSILO modal functionality when DOM is loaded
  * @listens DOMContentLoaded
  */
 document.addEventListener('DOMContentLoaded', function() {
-    const mimoContainer = document.getElementById('mimo-container');
-    const mimoMinimize = document.getElementById('mimo-minimize');
-    const mimoMaximize = document.getElementById('mimo-maximize');
-    const mimoHeader = document.querySelector('.mimo-header');
-    const mimoTabs = document.querySelectorAll('.mimo-tab');
-    const mimoPanels = document.querySelectorAll('.mimo-panel');
+    const psiloContainer = document.getElementById('psilo-container');
+    const psiloMinimize = document.getElementById('psilo-minimize');
+    const psiloMaximize = document.getElementById('psilo-maximize');
+    const psiloHeader = document.querySelector('.psilo-header');
+    const psiloTabs = document.querySelectorAll('.psilo-tab');
+    const psiloPanels = document.querySelectorAll('.psilo-panel');
     
     let isDragging = false;
     let currentX, currentY, initialX, initialY;
     let xOffset = 0, yOffset = 0;
     
     // Minimize/Maximize functionality
-    mimoMinimize.addEventListener('click', function() {
-        mimoContainer.classList.toggle('minimized');
-        this.textContent = mimoContainer.classList.contains('minimized') ? '+' : '−';
+    psiloMinimize.addEventListener('click', function() {
+        psiloContainer.classList.toggle('minimized');
+        this.textContent = psiloContainer.classList.contains('minimized') ? '+' : '−';
     });
     
-    mimoMaximize.addEventListener('click', function() {
-        mimoContainer.classList.toggle('maximized');
-        this.textContent = mimoContainer.classList.contains('maximized') ? '⊟' : '□';
+    psiloMaximize.addEventListener('click', function() {
+        psiloContainer.classList.toggle('maximized');
+        this.textContent = psiloContainer.classList.contains('maximized') ? '⊟' : '□';
     });
     
     // Tab switching
-    mimoTabs.forEach(tab => {
+    psiloTabs.forEach(tab => {
         tab.addEventListener('click', function() {
             const targetTab = this.dataset.tab;
             
-            mimoTabs.forEach(t => t.classList.remove('active'));
-            mimoPanels.forEach(p => p.classList.remove('active'));
+            psiloTabs.forEach(t => t.classList.remove('active'));
+            psiloPanels.forEach(p => p.classList.remove('active'));
             
             this.classList.add('active');
             document.getElementById(`${targetTab}-panel`).classList.add('active');
@@ -51,23 +51,23 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Dragging functionality
-    mimoHeader.addEventListener('mousedown', dragStart);
+    psiloHeader.addEventListener('mousedown', dragStart);
     document.addEventListener('mousemove', drag);
     document.addEventListener('mouseup', dragEnd);
     
     /**
-     * Initialize dragging functionality for Mimo modal
+     * Initialize dragging functionality for PSILO modal
      * @param {MouseEvent} e - Mouse event
      */
     function dragStart(e) {
-        if (mimoContainer.classList.contains('minimized')) return;
+        if (psiloContainer.classList.contains('minimized')) return;
         
         initialX = e.clientX - xOffset;
         initialY = e.clientY - yOffset;
         
-        if (e.target === mimoHeader || mimoHeader.contains(e.target)) {
+        if (e.target === psiloHeader || psiloHeader.contains(e.target)) {
             isDragging = true;
-            mimoContainer.classList.add('dragging');
+            psiloContainer.classList.add('dragging');
         }
     }
     
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
             xOffset = currentX;
             yOffset = currentY;
             
-            setTranslate(currentX, currentY, mimoContainer);
+            setTranslate(currentX, currentY, psiloContainer);
         }
     }
     
@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
      */
     function dragEnd() {
         isDragging = false;
-        mimoContainer.classList.remove('dragging');
+        psiloContainer.classList.remove('dragging');
     }
     
     /**
@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Wallet Connect functionality
-    const walletConnectBtn = document.querySelector('.mimo-wallet-connect');
+    const walletConnectBtn = document.querySelector('.psilo-wallet-connect');
     const walletStatus = document.querySelector('.wallet-status');
     const walletBalance = document.querySelector('.wallet-balance');
     const nftGallery = document.querySelector('.nft-gallery');
@@ -215,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Expose notification function globally
-    window.mimoNotify = addNotification;
+    window.psiloNotify = addNotification;
     
-    console.log('🎭 Mimo Assistant loaded and ready!');
+    console.log('🎭 PSILO Assistant loaded and ready!');
 });

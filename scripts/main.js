@@ -156,14 +156,14 @@ function initializeMarketplace() {
             if (type === 'public') {
                 publicMarketplace.style.display = 'grid';
                 privateMarketplace.style.display = 'none';
-                if (window.mimoNotify) {
-                    window.mimoNotify('🔓', 'Viewing Public Marketplace');
+                if (window.psiloNotify) {
+                    window.psiloNotify('🔓', 'Viewing Public Marketplace');
                 }
             } else {
                 publicMarketplace.style.display = 'none';
                 privateMarketplace.style.display = 'grid';
-                if (window.mimoNotify) {
-                    window.mimoNotify('🔒', 'Viewing Private IP Marketplace');
+                if (window.psiloNotify) {
+                    window.psiloNotify('🔒', 'Viewing Private IP Marketplace');
                 }
             }
         });
@@ -175,8 +175,8 @@ function initializeMarketplace() {
             showNotification(`Opening ${marketplace}...`);
             animateButton(this);
             
-            if (window.mimoNotify) {
-                window.mimoNotify('🛒', `Opening ${marketplace}`);
+            if (window.psiloNotify) {
+                window.psiloNotify('🛒', `Opening ${marketplace}`);
             }
         });
     });
@@ -189,8 +189,8 @@ function initializeMarketplace() {
             showNotification(`Loading ${action}...`);
             animateButton(this);
             
-            if (window.mimoNotify) {
-                window.mimoNotify('₿', `Loading ${action}`);
+            if (window.psiloNotify) {
+                window.psiloNotify('₿', `Loading ${action}`);
             }
         });
     });

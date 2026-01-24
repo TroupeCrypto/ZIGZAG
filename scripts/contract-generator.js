@@ -149,8 +149,8 @@ contract ${symbol} is Ownable {
         
         displayContract(contractCode);
         
-        if (window.mimoNotify) {
-            window.mimoNotify('📄', `Generated ${contractType} contract`);
+        if (window.psiloNotify) {
+            window.psiloNotify('📄', `Generated ${contractType} contract`);
         }
     }
     
@@ -176,8 +176,8 @@ contract ${symbol} is Ownable {
             const originalText = copyBtn.textContent;
             copyBtn.textContent = 'Copied!';
             
-            if (window.mimoNotify) {
-                window.mimoNotify('📋', 'Contract code copied to clipboard');
+            if (window.psiloNotify) {
+                window.psiloNotify('📋', 'Contract code copied to clipboard');
             }
             
             setTimeout(() => {
@@ -210,8 +210,8 @@ contract ${symbol} is Ownable {
             
             alert(`Contract ready for deployment!\n\nTo deploy:\n1. Copy the contract code\n2. Go to Remix IDE (remix.ethereum.org)\n3. Paste and compile the contract\n4. Deploy using your connected wallet\n\nConnected wallet: ${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}`);
             
-            if (window.mimoNotify) {
-                window.mimoNotify('📄', 'Contract code ready - use Remix IDE to deploy');
+            if (window.psiloNotify) {
+                window.psiloNotify('📄', 'Contract code ready - use Remix IDE to deploy');
             }
         } catch (error) {
             alert(`Preparation failed: ${error.message}`);

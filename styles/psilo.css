@@ -1,6 +1,6 @@
-/* Mimo Persistent Modal/Dashboard Styles */
+/* PSILO Persistent Modal/Dashboard Styles */
 
-.mimo-container {
+.psilo-container {
     position: fixed;
     bottom: 20px;
     right: 20px;
@@ -16,16 +16,16 @@
     overflow: hidden;
 }
 
-.mimo-container.minimized {
+.psilo-container.minimized {
     width: 200px;
     height: 60px;
 }
 
-.mimo-container.minimized .mimo-content {
+.psilo-container.minimized .psilo-content {
     display: none;
 }
 
-.mimo-container.maximized {
+.psilo-container.maximized {
     width: 500px;
     height: 600px;
     bottom: 50%;
@@ -33,7 +33,7 @@
     transform: translate(50%, 50%);
 }
 
-.mimo-header {
+.psilo-header {
     display: flex;
     align-items: center;
     padding: 15px;
@@ -42,7 +42,7 @@
     cursor: move;
 }
 
-.mimo-avatar {
+.psilo-avatar {
     font-size: 2rem;
     margin-right: 10px;
     animation: float 3s ease-in-out infinite;
@@ -53,19 +53,19 @@
     50% { transform: translateY(-5px); }
 }
 
-.mimo-title {
+.psilo-title {
     flex: 1;
     color: var(--light-text);
     font-weight: bold;
     font-size: 1.1rem;
 }
 
-.mimo-controls {
+.psilo-controls {
     display: flex;
     gap: 5px;
 }
 
-.mimo-btn {
+.psilo-btn {
     width: 30px;
     height: 30px;
     background: rgba(255, 255, 255, 0.1);
@@ -77,23 +77,23 @@
     transition: all 0.2s;
 }
 
-.mimo-btn:hover {
+.psilo-btn:hover {
     background: rgba(255, 0, 255, 0.3);
     transform: scale(1.1);
 }
 
-.mimo-content {
+.psilo-content {
     padding: 20px;
 }
 
-.mimo-tabs {
+.psilo-tabs {
     display: flex;
     gap: 5px;
     margin-bottom: 15px;
     overflow-x: auto;
 }
 
-.mimo-tab {
+.psilo-tab {
     flex: 1;
     min-width: 80px;
     padding: 8px 12px;
@@ -106,27 +106,27 @@
     font-size: 0.9rem;
 }
 
-.mimo-tab:hover {
+.psilo-tab:hover {
     background: rgba(255, 0, 255, 0.2);
     color: white;
 }
 
-.mimo-tab.active {
+.psilo-tab.active {
     background: linear-gradient(135deg, #ff00ff, #00ffff);
     color: white;
     border-color: transparent;
 }
 
-.mimo-panel {
+.psilo-panel {
     display: none;
     animation: fadeIn 0.3s;
 }
 
-.mimo-panel.active {
+.psilo-panel.active {
     display: block;
 }
 
-.mimo-panel h3 {
+.psilo-panel h3 {
     color: var(--secondary-color);
     margin-bottom: 15px;
     font-size: 1.2rem;
@@ -207,7 +207,7 @@
     font-weight: bold;
 }
 
-.mimo-wallet-connect {
+.psilo-wallet-connect {
     width: 100%;
     padding: 12px;
     background: linear-gradient(135deg, #ff00ff, #00ffff);
@@ -219,7 +219,7 @@
     transition: all 0.2s;
 }
 
-.mimo-wallet-connect:hover {
+.psilo-wallet-connect:hover {
     transform: scale(1.05);
     box-shadow: 0 5px 15px rgba(255, 0, 255, 0.5);
 }
@@ -308,19 +308,19 @@
 }
 
 /* Draggable functionality */
-.mimo-container.dragging {
+.psilo-container.dragging {
     cursor: move;
     opacity: 0.8;
 }
 
 /* Mobile responsive */
 @media (max-width: 768px) {
-    .mimo-container {
+    .psilo-container {
         width: calc(100vw - 40px);
         right: 20px;
     }
     
-    .mimo-container.maximized {
+    .psilo-container.maximized {
         width: calc(100vw - 40px);
         height: calc(100vh - 100px);
         bottom: 50px;

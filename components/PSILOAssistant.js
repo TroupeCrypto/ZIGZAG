@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 
-export default function MimoAssistant() {
+export default function PSILOAssistant() {
   const [isMinimized, setIsMinimized] = useState(true)
   const [isMaximized, setIsMaximized] = useState(false)
   const [activeTab, setActiveTab] = useState('music')
@@ -37,8 +37,8 @@ export default function MimoAssistant() {
   const handlePlayPause = () => {
     setIsPlaying(!isPlaying)
     if (!isPlaying) {
-      setCurrentTrack('Cosmic Waves')
-      addNotification('🎵', 'Started playing Cosmic Waves')
+      setCurrentTrack('Iso')
+      addNotification('🎵', 'Started playing Iso')
     }
   }
 
@@ -131,48 +131,48 @@ export default function MimoAssistant() {
   return (
     <div 
       ref={containerRef}
-      id="mimo-container" 
-      className={`mimo-container ${isMinimized ? 'minimized' : ''} ${isMaximized ? 'maximized' : ''} ${isDragging ? 'dragging' : ''}`}
+      id="psilo-container" 
+      className={`psilo-container ${isMinimized ? 'minimized' : ''} ${isMaximized ? 'maximized' : ''} ${isDragging ? 'dragging' : ''}`}
       style={containerStyle}
     >
       <div 
-        className="mimo-header"
+        className="psilo-header"
         onMouseDown={handleMouseDown}
       >
-        <div className="mimo-avatar">🎭</div>
-        <span className="mimo-title">Mimo Assistant</span>
-        <div className="mimo-controls">
-          <button id="mimo-minimize" className="mimo-btn" onClick={handleMinimize}>
+        <div className="psilo-avatar">🍄</div>
+        <span className="psilo-title">PSILO Assistant</span>
+        <div className="psilo-controls">
+          <button id="psilo-minimize" className="psilo-btn" onClick={handleMinimize}>
             {isMinimized ? '+' : '−'}
           </button>
-          <button id="mimo-maximize" className="mimo-btn" onClick={handleMaximize}>
+          <button id="psilo-maximize" className="psilo-btn" onClick={handleMaximize}>
             {isMaximized ? '⊟' : '□'}
           </button>
         </div>
       </div>
       {!isMinimized && (
-        <div className="mimo-content">
-          <div className="mimo-tabs">
+        <div className="psilo-content">
+          <div className="psilo-tabs">
             <button 
-              className={`mimo-tab ${activeTab === 'music' ? 'active' : ''}`}
+              className={`psilo-tab ${activeTab === 'music' ? 'active' : ''}`}
               onClick={() => handleTabChange('music')}
             >
               🎵 Music
             </button>
             <button 
-              className={`mimo-tab ${activeTab === 'wallet' ? 'active' : ''}`}
+              className={`psilo-tab ${activeTab === 'wallet' ? 'active' : ''}`}
               onClick={() => handleTabChange('wallet')}
             >
               💳 Wallet
             </button>
             <button 
-              className={`mimo-tab ${activeTab === 'nft' ? 'active' : ''}`}
+              className={`psilo-tab ${activeTab === 'nft' ? 'active' : ''}`}
               onClick={() => handleTabChange('nft')}
             >
               🖼️ NFT
             </button>
             <button 
-              className={`mimo-tab ${activeTab === 'notifications' ? 'active' : ''}`}
+              className={`psilo-tab ${activeTab === 'notifications' ? 'active' : ''}`}
               onClick={() => handleTabChange('notifications')}
             >
               🔔 Alerts
@@ -180,7 +180,7 @@ export default function MimoAssistant() {
           </div>
           
           {activeTab === 'music' && (
-            <div className="mimo-panel active" id="music-panel">
+            <div className="psilo-panel active" id="music-panel">
               <h3>Music Player</h3>
               <div className="music-player">
                 <div className="now-playing">
@@ -199,11 +199,11 @@ export default function MimoAssistant() {
           )}
           
           {activeTab === 'wallet' && (
-            <div className="mimo-panel active" id="wallet-panel">
+            <div className="psilo-panel active" id="wallet-panel">
               <h3>Wallet</h3>
               <div className="wallet-info">
                 <div className="wallet-status">{walletStatus}</div>
-                <button className="mimo-wallet-connect" onClick={handleWalletConnect}>
+                <button className="psilo-wallet-connect" onClick={handleWalletConnect}>
                   {walletConnected ? 'Disconnect' : 'Connect Wallet'}
                 </button>
                 {walletConnected && (
@@ -217,7 +217,7 @@ export default function MimoAssistant() {
           )}
           
           {activeTab === 'nft' && (
-            <div className="mimo-panel active" id="nft-panel">
+            <div className="psilo-panel active" id="nft-panel">
               <h3>Your NFTs</h3>
               <div className="nft-gallery">
                 {nfts.length === 0 ? (
@@ -238,7 +238,7 @@ export default function MimoAssistant() {
           )}
           
           {activeTab === 'notifications' && (
-            <div className="mimo-panel active" id="notifications-panel">
+            <div className="psilo-panel active" id="notifications-panel">
               <h3>Notifications</h3>
               <div className="notifications-list">
                 {notifications.map((notif, index) => (

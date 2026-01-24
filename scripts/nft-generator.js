@@ -100,8 +100,8 @@ document.addEventListener('DOMContentLoaded', function() {
         
         mintBtn.disabled = false;
         
-        if (window.mimoNotify) {
-            window.mimoNotify('🎨', `Generated ${artStyle} NFT`);
+        if (window.psiloNotify) {
+            window.psiloNotify('🎨', `Generated ${artStyle} NFT`);
         }
     }
     
@@ -257,8 +257,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!currentNFT) return;
         
         if (typeof window.ethereum === 'undefined') {
-            if (window.mimoNotify) {
-                window.mimoNotify('⚠️', 'Please install MetaMask to mint NFTs');
+            if (window.psiloNotify) {
+                window.psiloNotify('⚠️', 'Please install MetaMask to mint NFTs');
             }
             return;
         }
@@ -288,15 +288,15 @@ document.addEventListener('DOMContentLoaded', function() {
             const result = await response.json();
             
             if (result.success) {
-                if (window.mimoNotify) {
-                    window.mimoNotify('✅', `NFT minted! Token ID: #${result.tokenId}`);
+                if (window.psiloNotify) {
+                    window.psiloNotify('✅', `NFT minted! Token ID: #${result.tokenId}`);
                 }
             } else {
                 throw new Error(result.error || 'Minting failed');
             }
         } catch (error) {
-            if (window.mimoNotify) {
-                window.mimoNotify('❌', `Minting failed: ${error.message}`);
+            if (window.psiloNotify) {
+                window.psiloNotify('❌', `Minting failed: ${error.message}`);
             }
         } finally {
             mintBtn.textContent = 'Mint to Blockchain';

@@ -5,28 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZIG ZAG - Deluxe Hub Space</title>
     <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/mimo.css">
+    <link rel="stylesheet" href="styles/psilo.css">
 </head>
 <body>
-    <!-- Persistent Mimo Modal/Dashboard -->
-    <div id="mimo-container" class="mimo-container minimized">
-        <div class="mimo-header">
-            <div class="mimo-avatar">🎭</div>
-            <span class="mimo-title">Mimo Assistant</span>
-            <div class="mimo-controls">
-                <button id="mimo-minimize" class="mimo-btn">−</button>
-                <button id="mimo-maximize" class="mimo-btn">□</button>
+    <!-- Persistent PSILO Modal/Dashboard -->
+    <div id="psilo-container" class="psilo-container minimized">
+        <div class="psilo-header">
+            <div class="psilo-avatar">🍄</div>
+            <span class="psilo-title">PSILO Assistant</span>
+            <div class="psilo-controls">
+                <button id="psilo-minimize" class="psilo-btn">−</button>
+                <button id="psilo-maximize" class="psilo-btn">□</button>
             </div>
         </div>
-        <div class="mimo-content">
-            <div class="mimo-tabs">
-                <button class="mimo-tab active" data-tab="music">🎵 Music</button>
-                <button class="mimo-tab" data-tab="wallet">💳 Wallet</button>
-                <button class="mimo-tab" data-tab="nft">🖼️ NFT</button>
-                <button class="mimo-tab" data-tab="notifications">🔔 Alerts</button>
+        <div class="psilo-content">
+            <div class="psilo-tabs">
+                <button class="psilo-tab active" data-tab="music">🎵 Music</button>
+                <button class="psilo-tab" data-tab="wallet">💳 Wallet</button>
+                <button class="psilo-tab" data-tab="nft">🖼️ NFT</button>
+                <button class="psilo-tab" data-tab="notifications">🔔 Alerts</button>
             </div>
             
-            <div class="mimo-panel active" id="music-panel">
+            <div class="psilo-panel active" id="music-panel">
                 <h3>Music Player</h3>
                 <div class="music-player">
                     <div class="now-playing">No track loaded</div>
@@ -39,11 +39,11 @@
                 </div>
             </div>
             
-            <div class="mimo-panel" id="wallet-panel">
+            <div class="psilo-panel" id="wallet-panel">
                 <h3>Wallet</h3>
                 <div class="wallet-info">
                     <div class="wallet-status">Not Connected</div>
-                    <button class="mimo-wallet-connect">Connect Wallet</button>
+                    <button class="psilo-wallet-connect">Connect Wallet</button>
                     <div class="wallet-balance" style="display:none;">
                         <p>Balance: <span id="eth-balance">0 ETH</span></p>
                         <p>Address: <span id="wallet-address">-</span></p>
@@ -51,14 +51,14 @@
                 </div>
             </div>
             
-            <div class="mimo-panel" id="nft-panel">
+            <div class="psilo-panel" id="nft-panel">
                 <h3>Your NFTs</h3>
                 <div class="nft-gallery">
                     <p class="empty-state">Connect wallet to view NFTs</p>
                 </div>
             </div>
             
-            <div class="mimo-panel" id="notifications-panel">
+            <div class="psilo-panel" id="notifications-panel">
                 <h3>Notifications</h3>
                 <div class="notifications-list">
                     <div class="notification-item">
@@ -453,7 +453,7 @@
     </div>
 
     <script src="scripts/main.js"></script>
-    <script src="scripts/mimo.js"></script>
+    <script src="scripts/psilo.js"></script>
     <script src="scripts/nft-generator.js"></script>
     <script src="scripts/contract-generator.js"></script>
 </body>
