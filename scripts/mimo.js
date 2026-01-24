@@ -128,48 +128,61 @@ document.addEventListener('DOMContentLoaded', function() {
     const nftGallery = document.querySelector('.nft-gallery');
     
     walletConnectBtn.addEventListener('click', async function() {
+        if (typeof window.ethereum === 'undefined') {
+            walletStatus.textContent = 'MetaMask not found';
+            walletStatus.style.color = '#ff0000';
+            addNotification('⚠️', 'Please install MetaMask');
+            return;
+        }
+        
         walletStatus.textContent = 'Connecting...';
         this.disabled = true;
         
-        setTimeout(() => {
-            if (typeof window.ethereum !== 'undefined') {
+        try {
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            
+            if (accounts.length > 0) {
+                const address = accounts[0];
+                const shortAddress = `${address.slice(0, 6)}...${address.slice(-4)}`;
+                
+                // Get real balance using ethers
+                const provider = new (await import('https://cdn.jsdelivr.net/npm/ethers@6/+esm')).BrowserProvider(window.ethereum);
+                const balance = await provider.getBalance(address);
+                const ethBalance = (Number(balance) / 1e18).toFixed(4);
+                
                 walletStatus.textContent = 'Connected';
                 walletStatus.style.color = '#00ff00';
                 walletBalance.style.display = 'block';
-                document.getElementById('eth-balance').textContent = '2.45 ETH';
-                document.getElementById('wallet-address').textContent = '0x1234...5678';
+                document.getElementById('eth-balance').textContent = `${ethBalance} ETH`;
+                document.getElementById('wallet-address').textContent = shortAddress;
                 this.textContent = 'Disconnect';
                 this.disabled = false;
                 
                 // Load NFTs
-                loadUserNFTs();
+                loadUserNFTs(address);
                 
                 addNotification('💳', 'Wallet connected successfully');
-            } else {
-                walletStatus.textContent = 'MetaMask not found';
-                walletStatus.style.color = '#ff0000';
-                this.disabled = false;
-                addNotification('⚠️', 'Please install MetaMask');
             }
-        }, 1500);
+        } catch (error) {
+            walletStatus.textContent = 'Connection failed';
+            walletStatus.style.color = '#ff0000';
+            this.disabled = false;
+            addNotification('⚠️', `Connection failed: ${error.message}`);
+        }
     });
     
     /**
      * Load user's NFT collection into gallery
+     * @param {string} address - Wallet address
      */
-    function loadUserNFTs() {
-        nftGallery.innerHTML = '';
-        const emojis = ['🎨', '🌈', '✨', '🔮', '🌟', '💫'];
+    function loadUserNFTs(address) {
+        nftGallery.innerHTML = '<p style="text-align:center;color:#888;">Loading NFTs...</p>';
         
-        emojis.forEach((emoji, index) => {
-            const nftItem = document.createElement('div');
-            nftItem.className = 'nft-item';
-            nftItem.textContent = emoji;
-            nftItem.addEventListener('click', function() {
-                addNotification('🖼️', `Viewing NFT #${index + 1}`);
-            });
-            nftGallery.appendChild(nftItem);
-        });
+        // Fetch real NFTs from blockchain or API
+        // For now, show empty state with instruction
+        setTimeout(() => {
+            nftGallery.innerHTML = '<p style="text-align:center;color:#888;">No NFTs found. Mint or purchase NFTs to see them here.</p>';
+        }, 1000);
     }
     
     /**

@@ -36,22 +36,32 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     
     /**
-     * Draw placeholder on canvas
+     * Draw initial canvas state
      */
-    function drawPlaceholder() {
+    function drawInitialCanvas() {
         const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-        gradient.addColorStop(0, '#ff00ff');
-        gradient.addColorStop(0.5, '#00ffff');
-        gradient.addColorStop(1, '#ffff00');
+        gradient.addColorStop(0, '#1a1a2e');
+        gradient.addColorStop(0.5, '#16213e');
+        gradient.addColorStop(1, '#0f3460');
         
         ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-        ctx.font = '24px Arial';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('Click Generate to create NFT', canvas.width / 2, canvas.height / 2);
+        // Draw grid pattern
+        ctx.strokeStyle = 'rgba(255, 0, 255, 0.2)';
+        ctx.lineWidth = 1;
+        for (let i = 0; i < canvas.width; i += 25) {
+            ctx.beginPath();
+            ctx.moveTo(i, 0);
+            ctx.lineTo(i, canvas.height);
+            ctx.stroke();
+        }
+        for (let i = 0; i < canvas.height; i += 25) {
+            ctx.beginPath();
+            ctx.moveTo(0, i);
+            ctx.lineTo(canvas.width, i);
+            ctx.stroke();
+        }
     }
     
     /**
@@ -246,21 +256,52 @@ document.addEventListener('DOMContentLoaded', function() {
     async function mintNFT() {
         if (!currentNFT) return;
         
+        if (typeof window.ethereum === 'undefined') {
+            if (window.mimoNotify) {
+                window.mimoNotify('⚠️', 'Please install MetaMask to mint NFTs');
+            }
+            return;
+        }
+        
         mintBtn.textContent = 'Minting...';
         mintBtn.disabled = true;
         
-        // Simulate blockchain transaction
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        
-        const imageData = canvas.toDataURL('image/png');
-        const tokenId = Math.floor(Math.random() * 10000);
-        
-        if (window.mimoNotify) {
-            window.mimoNotify('✅', `NFT minted successfully! Token ID: #${tokenId}`);
+        try {
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            const walletAddress = accounts[0];
+            
+            const imageData = canvas.toDataURL('image/png');
+            
+            const response = await fetch('/api/nft/mint', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    nftId: `zigzag-${Date.now()}`,
+                    walletAddress: walletAddress,
+                    metadata: {
+                        ...currentNFT,
+                        image: imageData
+                    }
+                })
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                if (window.mimoNotify) {
+                    window.mimoNotify('✅', `NFT minted! Token ID: #${result.tokenId}`);
+                }
+            } else {
+                throw new Error(result.error || 'Minting failed');
+            }
+        } catch (error) {
+            if (window.mimoNotify) {
+                window.mimoNotify('❌', `Minting failed: ${error.message}`);
+            }
+        } finally {
+            mintBtn.textContent = 'Mint to Blockchain';
+            mintBtn.disabled = false;
         }
-        
-        mintBtn.textContent = 'Mint to Blockchain';
-        mintBtn.disabled = false;
     }
     
     // Event listeners

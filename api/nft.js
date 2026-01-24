@@ -89,22 +89,39 @@ function generateUniqueId() {
 }
 
 /**
- * Mint NFT to blockchain (mock implementation)
+ * Mint NFT to blockchain using ethers.js
  * @async
  * @param {string} nftId - NFT identifier
  * @param {string} walletAddress - Ethereum wallet address
- * @returns {Promise<string>} Mock transaction hash
+ * @returns {Promise<string>} Transaction hash
  */
 async function mintToBlockchain(nftId, walletAddress) {
-    // TODO: Implement actual blockchain minting using Web3.js or ethers.js
-    // This is a mock implementation for demonstration
-    // In production, this should:
-    // 1. Connect to Ethereum/Polygon network
-    // 2. Call smart contract mint function with nftId
-    // 3. Send transaction from/to walletAddress
-    // 4. Return actual transaction hash
-    return '0x' + Array.from({length: 64}, () => 
-        Math.floor(Math.random() * 16).toString(16)).join('');
+    const { ethers } = require('ethers');
+    
+    const rpcUrl = process.env.ETHEREUM_RPC_URL || process.env.POLYGON_RPC_URL;
+    const privateKey = process.env.MINTER_PRIVATE_KEY;
+    const contractAddress = process.env.NFT_CONTRACT_ADDRESS;
+    
+    if (!rpcUrl || !privateKey || !contractAddress) {
+        throw new Error('Blockchain configuration missing. Set ETHEREUM_RPC_URL, MINTER_PRIVATE_KEY, and NFT_CONTRACT_ADDRESS environment variables.');
+    }
+    
+    const provider = new ethers.JsonRpcProvider(rpcUrl);
+    const wallet = new ethers.Wallet(privateKey, provider);
+    
+    const nftContractABI = [
+        'function mintNFT(address recipient, uint256 tokenId) public returns (uint256)',
+        'function safeMint(address to, uint256 tokenId) public'
+    ];
+    
+    const nftContract = new ethers.Contract(contractAddress, nftContractABI, wallet);
+    
+    const tokenId = BigInt('0x' + Buffer.from(nftId).toString('hex').slice(0, 16));
+    
+    const tx = await nftContract.mintNFT(walletAddress, tokenId);
+    const receipt = await tx.wait();
+    
+    return receipt.hash;
 }
 
 module.exports = router;

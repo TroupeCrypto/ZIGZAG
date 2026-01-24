@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 /**
  * Initialize wallet connection functionality
- * Handles MetaMask detection and connection simulation
+ * Handles MetaMask detection and real wallet connection
  * @function initializeWalletConnect
  * @returns {void}
  */
@@ -45,24 +45,37 @@ function initializeWalletConnect() {
     if (!connectButton || !walletStatus) return;
     
     connectButton.addEventListener('click', async function() {
-        // Simulate wallet connection (in production, use Web3.js or ethers.js)
+        if (typeof window.ethereum === 'undefined') {
+            walletStatus.textContent = 'MetaMask not found';
+            walletStatus.style.color = '#ff0000';
+            showNotification('Please install MetaMask to connect', 'error');
+            return;
+        }
+        
         walletStatus.textContent = 'Connecting...';
         connectButton.disabled = true;
         
-        setTimeout(() => {
-            if (typeof window.ethereum !== 'undefined') {
-                walletStatus.textContent = 'Connected: 0x1234...5678';
+        try {
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            
+            if (accounts.length > 0) {
+                const address = accounts[0];
+                const shortAddress = `${address.slice(0, 6)}...${address.slice(-4)}`;
+                walletStatus.textContent = `Connected: ${shortAddress}`;
                 walletStatus.style.color = '#00ff00';
                 connectButton.textContent = 'Disconnect';
                 connectButton.disabled = false;
                 showNotification('Wallet connected successfully! 🎉');
-            } else {
-                walletStatus.textContent = 'MetaMask not found';
-                walletStatus.style.color = '#ff0000';
-                connectButton.disabled = false;
-                showNotification('Please install MetaMask to connect', 'error');
+                
+                // Store address for later use
+                window.connectedWalletAddress = address;
             }
-        }, 1500);
+        } catch (error) {
+            walletStatus.textContent = 'Connection failed';
+            walletStatus.style.color = '#ff0000';
+            connectButton.disabled = false;
+            showNotification(`Connection failed: ${error.message}`, 'error');
+        }
     });
 }
 
@@ -312,10 +325,16 @@ function showArtModal(artName) {
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                font-size: 10rem;
                 margin: 20px auto;
-            ">🎨</div>
-            <p style="margin: 20px 0; font-size: 1.2rem;">High-resolution artwork would be displayed here</p>
+                overflow: hidden;
+            ">
+                <img src="/art/${artName.toLowerCase().replace(/\s+/g, '-')}.png" 
+                     alt="${artName}" 
+                     style="width: 100%; height: 100%; object-fit: cover;"
+                     onerror="this.parentElement.innerHTML='<span style=font-size:8rem>🎨</span>'"
+                />
+            </div>
+            <p style="margin: 20px 0; font-size: 1.2rem;">by ZIG ZAG</p>
             <button onclick="this.closest('.art-modal').remove()" style="
                 padding: 15px 40px;
                 background: white;

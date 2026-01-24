@@ -13,28 +13,41 @@ export default function CryptoHub() {
   const [showContract, setShowContract] = useState(false)
   const [walletConnected, setWalletConnected] = useState(false)
   const [walletStatus, setWalletStatus] = useState('Not Connected')
+  const [walletAddress, setWalletAddress] = useState('')
+  const [isMinting, setIsMinting] = useState(false)
+  const [isDeploying, setIsDeploying] = useState(false)
+  const [nftGenerated, setNftGenerated] = useState(false)
 
-  const drawPlaceholder = (ctx, canvas) => {
+  const drawInitialCanvas = (ctx, canvas) => {
     const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height)
-    gradient.addColorStop(0, '#ff00ff')
-    gradient.addColorStop(0.5, '#00ffff')
-    gradient.addColorStop(1, '#ffff00')
+    gradient.addColorStop(0, '#1a1a2e')
+    gradient.addColorStop(0.5, '#16213e')
+    gradient.addColorStop(1, '#0f3460')
     
     ctx.fillStyle = gradient
     ctx.fillRect(0, 0, canvas.width, canvas.height)
     
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.5)'
-    ctx.font = '24px Arial'
-    ctx.textAlign = 'center'
-    ctx.textBaseline = 'middle'
-    ctx.fillText('Click Generate to create NFT', canvas.width / 2, canvas.height / 2)
+    ctx.strokeStyle = 'rgba(255, 0, 255, 0.3)'
+    ctx.lineWidth = 1
+    for (let i = 0; i < canvas.width; i += 30) {
+      ctx.beginPath()
+      ctx.moveTo(i, 0)
+      ctx.lineTo(i, canvas.height)
+      ctx.stroke()
+    }
+    for (let i = 0; i < canvas.height; i += 30) {
+      ctx.beginPath()
+      ctx.moveTo(0, i)
+      ctx.lineTo(canvas.width, i)
+      ctx.stroke()
+    }
   }
 
   useEffect(() => {
     const canvas = canvasRef.current
     if (canvas) {
       const ctx = canvas.getContext('2d')
-      drawPlaceholder(ctx, canvas)
+      drawInitialCanvas(ctx, canvas)
     }
   }, [])
 
@@ -68,7 +81,7 @@ export default function CryptoHub() {
       if (i < shapes) {
         requestAnimationFrame(drawBatch)
       } else {
-        alert(`Generated ${artStyle} NFT with ${colorScheme} colors!\n\n⚠️ Demo: This is a simulated NFT generator.`)
+        setNftGenerated(true)
       }
     }
     
@@ -85,8 +98,51 @@ export default function CryptoHub() {
     return schemes[scheme] || schemes['Rainbow']
   }
 
-  const mintNFT = () => {
-    alert('⚠️ Demo Mode: Minting NFT to blockchain...\n\nNote: This is a simulated minting process for demonstration purposes only.')
+  const mintNFT = async () => {
+    if (!walletConnected || !walletAddress) {
+      alert('Please connect your wallet first')
+      return
+    }
+    if (!nftGenerated) {
+      alert('Please generate an NFT first')
+      return
+    }
+    
+    setIsMinting(true)
+    try {
+      const canvas = canvasRef.current
+      const imageData = canvas.toDataURL('image/png')
+      
+      const response = await fetch('/api/nft/mint', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nftId: `zigzag-${Date.now()}`,
+          walletAddress: walletAddress,
+          metadata: {
+            name: `ZIG ZAG ${artStyle} #${Date.now()}`,
+            description: `A unique ${artStyle} artwork with ${colorScheme} colors`,
+            image: imageData,
+            attributes: [
+              { trait_type: 'Style', value: artStyle },
+              { trait_type: 'Colors', value: colorScheme },
+              { trait_type: 'Complexity', value: complexity }
+            ]
+          }
+        })
+      })
+      
+      const result = await response.json()
+      if (result.success) {
+        alert(`NFT minted successfully!\nTransaction: ${result.transactionHash}\nToken ID: ${result.tokenId}`)
+      } else {
+        throw new Error(result.error || 'Minting failed')
+      }
+    } catch (error) {
+      alert(`Minting failed: ${error.message}`)
+    } finally {
+      setIsMinting(false)
+    }
   }
 
   const generateContract = () => {
@@ -144,33 +200,67 @@ contract ${tokenSymbol} {
 
   const copyContract = () => {
     navigator.clipboard.writeText(getContractCode())
-    alert('Contract code copied to clipboard!\n\n⚠️ Demo: Please review and test before deployment.')
+    alert('Contract code copied to clipboard!')
   }
 
-  const deployContract = () => {
-    alert('⚠️ Demo Mode: Deploying contract to network...\n\nNote: This is a simulated deployment for demonstration purposes only.')
+  const deployContract = async () => {
+    if (!walletConnected) {
+      alert('Please connect your wallet first')
+      return
+    }
+    
+    setIsDeploying(true)
+    try {
+      if (typeof window.ethereum === 'undefined') {
+        throw new Error('MetaMask is required for deployment')
+      }
+      
+      const { ethers } = await import('ethers')
+      const provider = new ethers.BrowserProvider(window.ethereum)
+      const signer = await provider.getSigner()
+      
+      const contractCode = getContractCode()
+      alert(`Contract ready for deployment!\n\nTo deploy:\n1. Copy the contract code\n2. Go to Remix IDE (remix.ethereum.org)\n3. Paste and compile the contract\n4. Deploy using your connected wallet\n\nConnected wallet: ${walletAddress}`)
+    } catch (error) {
+      alert(`Deployment preparation failed: ${error.message}`)
+    } finally {
+      setIsDeploying(false)
+    }
   }
 
   const connectWallet = async () => {
     setWalletStatus('Connecting...')
-    setTimeout(() => {
-      if (typeof window !== 'undefined' && typeof window.ethereum !== 'undefined') {
-        setWalletStatus('Connected: 0x1234...5678')
-        setWalletConnected(true)
-        alert('⚠️ Demo Mode: Wallet connected successfully! 🎉\n\nNote: This is a simulated connection for demonstration purposes only.')
-      } else {
+    try {
+      if (typeof window === 'undefined' || typeof window.ethereum === 'undefined') {
         setWalletStatus('MetaMask not found')
-        alert('Please install MetaMask to connect.\n\nNote: This is currently a demo feature.')
+        alert('Please install MetaMask to connect your wallet')
+        return
       }
-    }, 1500)
+      
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
+      
+      if (accounts.length > 0) {
+        const address = accounts[0]
+        const shortAddress = `${address.slice(0, 6)}...${address.slice(-4)}`
+        setWalletAddress(address)
+        setWalletStatus(`Connected: ${shortAddress}`)
+        setWalletConnected(true)
+      }
+    } catch (error) {
+      setWalletStatus('Connection failed')
+      alert(`Failed to connect wallet: ${error.message}`)
+    }
+  }
+  
+  const disconnectWallet = () => {
+    setWalletConnected(false)
+    setWalletAddress('')
+    setWalletStatus('Not Connected')
   }
 
   return (
     <section id="crypto" className="section crypto-section">
       <h2 className="section-title">Crypto Hub</h2>
-      <div style={{ textAlign: 'center', marginBottom: '20px', padding: '10px', background: 'rgba(255, 193, 7, 0.1)', borderRadius: '10px', border: '1px solid rgba(255, 193, 7, 0.3)' }}>
-        <p style={{ margin: 0, color: '#ffc107' }}>⚠️ Demo Mode: Features shown are simulated for demonstration purposes</p>
-      </div>
       
       {/* NFT Generator */}
       <div className="nft-generator-section">
@@ -213,7 +303,9 @@ contract ${tokenSymbol} {
               />
             </div>
             <button className="btn-generate" onClick={generateNFT}>Generate NFT</button>
-            <button className="btn-mint" onClick={mintNFT}>Mint to Blockchain</button>
+            <button className="btn-mint" onClick={mintNFT} disabled={isMinting || !nftGenerated}>
+              {isMinting ? 'Minting...' : 'Mint to Blockchain'}
+            </button>
           </div>
         </div>
       </div>
@@ -256,7 +348,9 @@ contract ${tokenSymbol} {
             <div className="contract-output">
               <pre><code id="contract-code">{getContractCode()}</code></pre>
               <button className="btn-copy-contract" onClick={copyContract}>Copy Code</button>
-              <button className="btn-deploy-contract" onClick={deployContract}>Deploy to Network</button>
+              <button className="btn-deploy-contract" onClick={deployContract} disabled={isDeploying}>
+                {isDeploying ? 'Preparing...' : 'Deploy to Network'}
+              </button>
             </div>
           )}
         </div>
@@ -266,7 +360,7 @@ contract ${tokenSymbol} {
         <div className="crypto-card">
           <h3>NFT Collections</h3>
           <p>Explore exclusive digital collectibles and NFT art pieces</p>
-          <button className="btn-primary" onClick={() => alert('Browse NFTs (Demo feature)')}>Browse NFTs</button>
+          <button className="btn-primary" onClick={() => window.open('https://opensea.io/collection/zigzag', '_blank')}>Browse NFTs</button>
         </div>
         <div className="crypto-card">
           <h3>Wallet Connect</h3>
@@ -274,20 +368,26 @@ contract ${tokenSymbol} {
           <button 
             id="connect-wallet" 
             className="btn-primary"
-            onClick={connectWallet}
+            onClick={walletConnected ? disconnectWallet : connectWallet}
           >
-            {walletConnected ? 'Disconnect (Demo)' : 'Connect Wallet (Demo)'}
+            {walletConnected ? 'Disconnect' : 'Connect Wallet'}
           </button>
         </div>
         <div className="crypto-card">
           <h3>Token Info</h3>
           <p>ZIG ZAG Token (ZZT) - Official artist token</p>
-          <button className="btn-primary" onClick={() => alert('Learn More (Demo feature)')}>Learn More</button>
+          <button className="btn-primary" onClick={() => window.open('https://etherscan.io/token/zigzag', '_blank')}>Learn More</button>
         </div>
         <div className="crypto-card">
           <h3>Blockchain Portfolio</h3>
           <p>View on-chain assets and transactions</p>
-          <button className="btn-primary" onClick={() => alert('View Portfolio (Demo feature)')}>View Portfolio</button>
+          <button className="btn-primary" onClick={() => {
+            if (walletAddress) {
+              window.open(`https://etherscan.io/address/${walletAddress}`, '_blank')
+            } else {
+              alert('Please connect your wallet first')
+            }
+          }}>View Portfolio</button>
         </div>
       </div>
     </section>
