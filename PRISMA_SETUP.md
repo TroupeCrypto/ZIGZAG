@@ -4,7 +4,7 @@ This guide will help you set up and use Prisma ORM with PostgreSQL in the ZIGZAG
 
 ## Prerequisites
 
-- Node.js >= 14.0.0
+- Node.js >= 18.18.0
 - PostgreSQL database instance
 - Database connection URL
 
@@ -68,12 +68,12 @@ When prompted, provide a name for your migration (e.g., "init").
 
 ### 3. Run Example Query
 
-The `index.ts` file contains an example query that creates a new user:
+The `index.js` file contains an example query that upserts a user:
 ```bash
 npm run db:query
 ```
 
-This will create a user named "Alice" with the email "alice@prisma.io".
+This will create or update a user named "Alice" with the email "alice@prisma.io". Using `upsert` instead of `create` allows the script to be run multiple times without unique constraint errors.
 
 ### 4. Prisma Studio (Optional)
 
@@ -87,27 +87,31 @@ npm run prisma:studio
 - `npm run prisma:generate` - Generate Prisma Client
 - `npm run prisma:migrate` - Create and run database migrations
 - `npm run prisma:studio` - Open Prisma Studio
-- `npm run db:query` - Run the example query in index.ts
+- `npm run db:query` - Run the example query in index.js
 
 ## Example Usage
 
-```typescript
-import 'dotenv/config'
-import { PrismaClient } from "./generated/prisma/client.js";
-import { PrismaPg } from "@prisma/adapter-pg";
-import { Pool } from 'pg';
+```javascript
+require('dotenv/config');
+const { PrismaClient } = require("./generated/prisma/client.js");
+const { PrismaPg } = require("@prisma/adapter-pg");
+const { Pool } = require('pg');
 
 const connectionString = process.env.DATABASE_URL;
 const pool = new Pool({ connectionString });
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
-// Create a user
-const user = await prisma.user.create({
-  data: {
+// Create or update a user using upsert to avoid duplicate errors
+const user = await prisma.user.upsert({
+  where: {
+    email: 'alice@prisma.io',
+  },
+  create: {
     name: 'Alice',
     email: 'alice@prisma.io',
   },
+  update: {},
 })
 
 // Find all users
