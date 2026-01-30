@@ -68,12 +68,12 @@ router.post('/mint', async (req, res) => {
         const { nftId, walletAddress } = req.body;
         
         // Blockchain minting logic here
-        const transactionHash = await mintToBlockchain(nftId, walletAddress);
+        const result = await mintToBlockchain(nftId, walletAddress);
         
         res.json({ 
             success: true, 
-            transactionHash,
-            tokenId: nftId 
+            transactionHash: result.hash,
+            tokenId: result.tokenId 
         });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
@@ -101,7 +101,7 @@ function generateUniqueId() {
  * @async
  * @param {string} nftId - NFT identifier
  * @param {string} walletAddress - Ethereum wallet address
- * @returns {Promise<string>} Transaction hash
+ * @returns {Promise<{hash: string, tokenId: string}>} Transaction hash and tokenId
  */
 async function mintToBlockchain(nftId, walletAddress) {
     const { ethers } = require('ethers');
@@ -134,14 +134,18 @@ async function mintToBlockchain(nftId, walletAddress) {
     
     const nftContract = new ethers.Contract(contractAddress, nftContractABI, wallet);
     
-    // Generate collision-resistant tokenId using keccak256 hash
-    const tokenIdHash = ethers.keccak256(ethers.toUtf8Bytes(nftId + Date.now().toString()));
+    // Generate collision-resistant tokenId using keccak256 hash with additional randomness
+    const randomBytes = ethers.randomBytes(16);
+    const tokenIdHash = ethers.keccak256(ethers.concat([
+        ethers.toUtf8Bytes(nftId),
+        randomBytes
+    ]));
     const tokenId = BigInt(tokenIdHash) % BigInt('0xFFFFFFFFFFFFFFFF'); // Fit into uint64 range
     
     const tx = await nftContract.mintNFT(walletAddress, tokenId);
     const receipt = await tx.wait();
     
-    return receipt.hash;
+    return { hash: receipt.hash, tokenId: tokenId.toString() };
 }
 
 module.exports = router;

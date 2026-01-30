@@ -273,8 +273,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
             const walletAddress = accounts[0];
             
-            const imageData = canvas.toDataURL('image/png');
-            
             const response = await fetch('/api/nft/mint', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
