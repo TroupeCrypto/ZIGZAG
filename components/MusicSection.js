@@ -37,6 +37,21 @@ export default function MusicSection() {
         }
       } catch (error) {
         console.error('Failed to load music data:', error)
+        // Fallback to actual ZIG ZAG discography if the API request itself fails
+        setMusicData({
+          singles: [
+            { id: 1, name: 'Iso', year: '2021', streamUrl: 'https://www.youtube.com/watch?v=7yw78F_0r_c' },
+            { id: 2, name: 'Red Pills / Blue Pills', year: '2020', streamUrl: 'https://www.youtube.com/watch?v=Ruk5JDBFfEQ' },
+            { id: 3, name: 'Told You So', year: '2019', streamUrl: 'https://www.youtube.com/watch?v=lkAPGTT7k6E' }
+          ],
+          albums: [
+            { id: 4, name: 'MYTH: Created', year: '2025', streamUrl: 'https://www.troupeinc.com/pages/discography-zig-zag', upcoming: true },
+            { id: 5, name: 'V8R', year: '2020', streamUrl: 'https://www.troupeinc.com/pages/discography-zig-zag' }
+          ],
+          eps: [
+            { id: 6, name: 'The Rabbit Hole EP', year: '2019', streamUrl: 'https://www.troupeinc.com/pages/discography-zig-zag' }
+          ]
+        })
       } finally {
         setLoading(false)
       }

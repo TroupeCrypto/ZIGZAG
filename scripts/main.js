@@ -44,7 +44,22 @@ function initializeWalletConnect() {
     
     if (!connectButton || !walletStatus) return;
     
+    // Track connection state
+    let isConnected = false;
+    
     connectButton.addEventListener('click', async function() {
+        // Handle disconnect
+        if (isConnected) {
+            walletStatus.textContent = 'Not Connected';
+            walletStatus.style.color = '';
+            connectButton.textContent = 'Connect Wallet';
+            connectButton.disabled = false;
+            window.connectedWalletAddress = null;
+            isConnected = false;
+            showNotification('Wallet disconnected');
+            return;
+        }
+        
         if (typeof window.ethereum === 'undefined') {
             walletStatus.textContent = 'MetaMask not found';
             walletStatus.style.color = '#ff0000';
@@ -65,6 +80,7 @@ function initializeWalletConnect() {
                 walletStatus.style.color = '#00ff00';
                 connectButton.textContent = 'Disconnect';
                 connectButton.disabled = false;
+                isConnected = true;
                 showNotification('Wallet connected successfully! 🎉');
                 
                 // Store address for later use
@@ -302,51 +318,76 @@ function showArtModal(artName) {
         animation: fadeIn 0.3s ease-out;
     `;
     
-    modal.innerHTML = `
-        <div style="
-            background: linear-gradient(135deg, #ff00ff, #00ffff);
-            padding: 40px;
-            border-radius: 20px;
-            text-align: center;
-            max-width: 90vw;
-            max-height: 90vh;
-            animation: zoomIn 0.3s ease-out;
-            overflow: auto;
-        ">
-            <h2 style="margin-bottom: 20px; font-size: 2.5rem;">${artName}</h2>
-            <div style="
-                width: 100%;
-                max-width: 600px;
-                height: auto;
-                aspect-ratio: 1;
-                max-height: 60vh;
-                background: linear-gradient(45deg, #ff0080, #00ff80, #0080ff);
-                border-radius: 10px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                margin: 20px auto;
-                overflow: hidden;
-            ">
-                <img src="/art/${artName.toLowerCase().replace(/\s+/g, '-')}.png" 
-                     alt="${artName}" 
-                     style="width: 100%; height: 100%; object-fit: cover;"
-                     onerror="this.parentElement.innerHTML='<span style=font-size:8rem>🎨</span>'"
-                />
-            </div>
-            <p style="margin: 20px 0; font-size: 1.2rem;">by ZIG ZAG</p>
-            <button onclick="this.closest('.art-modal').remove()" style="
-                padding: 15px 40px;
-                background: white;
-                color: black;
-                border: none;
-                border-radius: 25px;
-                font-weight: bold;
-                cursor: pointer;
-                font-size: 1.1rem;
-            ">Close</button>
-        </div>
+    // Create modal content using DOM methods for safety
+    const contentDiv = document.createElement('div');
+    contentDiv.style.cssText = `
+        background: linear-gradient(135deg, #ff00ff, #00ffff);
+        padding: 40px;
+        border-radius: 20px;
+        text-align: center;
+        max-width: 90vw;
+        max-height: 90vh;
+        animation: zoomIn 0.3s ease-out;
+        overflow: auto;
     `;
+    
+    const title = document.createElement('h2');
+    title.style.cssText = 'margin-bottom: 20px; font-size: 2.5rem;';
+    title.textContent = artName; // Safe: uses textContent
+    
+    const imageContainer = document.createElement('div');
+    imageContainer.style.cssText = `
+        width: 100%;
+        max-width: 600px;
+        height: auto;
+        aspect-ratio: 1;
+        max-height: 60vh;
+        background: linear-gradient(45deg, #ff0080, #00ff80, #0080ff);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 20px auto;
+        overflow: hidden;
+    `;
+    
+    const img = document.createElement('img');
+    const safeName = artName.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-');
+    img.src = `/art/${safeName}.png`;
+    img.alt = artName;
+    img.style.cssText = 'width: 100%; height: 100%; object-fit: cover;';
+    img.onerror = function() {
+        const fallback = document.createElement('span');
+        fallback.style.fontSize = '8rem';
+        fallback.textContent = '🎨';
+        imageContainer.innerHTML = '';
+        imageContainer.appendChild(fallback);
+    };
+    imageContainer.appendChild(img);
+    
+    const byLine = document.createElement('p');
+    byLine.style.cssText = 'margin: 20px 0; font-size: 1.2rem;';
+    byLine.textContent = 'by ZIG ZAG';
+    
+    const closeBtn = document.createElement('button');
+    closeBtn.style.cssText = `
+        padding: 15px 40px;
+        background: white;
+        color: black;
+        border: none;
+        border-radius: 25px;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 1.1rem;
+    `;
+    closeBtn.textContent = 'Close';
+    closeBtn.onclick = function() { modal.remove(); };
+    
+    contentDiv.appendChild(title);
+    contentDiv.appendChild(imageContainer);
+    contentDiv.appendChild(byLine);
+    contentDiv.appendChild(closeBtn);
+    modal.appendChild(contentDiv);
     
     document.body.appendChild(modal);
     

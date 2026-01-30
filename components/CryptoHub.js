@@ -215,11 +215,11 @@ contract ${tokenSymbol} {
         throw new Error('MetaMask is required for deployment')
       }
       
-      const { ethers } = await import('ethers')
-      const provider = new ethers.BrowserProvider(window.ethereum)
-      const signer = await provider.getSigner()
-      
       const contractCode = getContractCode()
+      if (!contractCode || !contractCode.trim()) {
+        throw new Error('Generated contract code is empty')
+      }
+      
       alert(`Contract ready for deployment!\n\nTo deploy:\n1. Copy the contract code\n2. Go to Remix IDE (remix.ethereum.org)\n3. Paste and compile the contract\n4. Deploy using your connected wallet\n\nConnected wallet: ${walletAddress}`)
     } catch (error) {
       alert(`Deployment preparation failed: ${error.message}`)

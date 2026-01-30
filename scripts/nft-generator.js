@@ -27,6 +27,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (!canvas) return;
     
+    // Initialize canvas with initial state
+    drawInitialCanvas();
+    
     // Color schemes
     const colorSchemes = {
         'Rainbow': ['#ff0000', '#ff7f00', '#ffff00', '#00ff00', '#0000ff', '#4b0082', '#9400d3'],
@@ -277,11 +280,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     nftId: `zigzag-${Date.now()}`,
-                    walletAddress: walletAddress,
-                    metadata: {
-                        ...currentNFT,
-                        image: imageData
-                    }
+                    walletAddress: walletAddress
                 })
             });
             

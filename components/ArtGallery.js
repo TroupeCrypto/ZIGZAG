@@ -4,6 +4,8 @@ import { useState } from 'react'
 
 export default function ArtGallery() {
   const [selectedArt, setSelectedArt] = useState(null)
+  const [imageError, setImageError] = useState({})
+  const [modalImageError, setModalImageError] = useState(false)
 
   const artworks = [
     { id: 1, name: 'Cosmic Mandala', image: '/art/cosmic-mandala.png', artist: 'ZIG ZAG' },
@@ -16,10 +18,16 @@ export default function ArtGallery() {
 
   const handleView = (art) => {
     setSelectedArt(art)
+    setModalImageError(false)
   }
 
   const closeModal = () => {
     setSelectedArt(null)
+    setModalImageError(false)
+  }
+
+  const handleImageError = (artId) => {
+    setImageError(prev => ({ ...prev, [artId]: true }))
   }
 
   return (
@@ -30,17 +38,17 @@ export default function ArtGallery() {
           {artworks.map((art) => (
             <div key={art.id} className="art-piece">
               <div className="art-image-container">
-                <img 
-                  src={art.image} 
-                  alt={art.name}
-                  onError={(e) => {
-                    e.target.style.display = 'none'
-                    e.target.nextSibling.style.display = 'flex'
-                  }}
-                />
-                <div className="art-fallback" style={{ display: 'none', background: 'linear-gradient(135deg, #ff00ff, #00ffff)', width: '100%', height: '200px', alignItems: 'center', justifyContent: 'center', borderRadius: '10px' }}>
-                  <span style={{ fontSize: '3rem' }}>🎨</span>
-                </div>
+                {!imageError[art.id] ? (
+                  <img 
+                    src={art.image} 
+                    alt={art.name}
+                    onError={() => handleImageError(art.id)}
+                  />
+                ) : (
+                  <div className="art-fallback" style={{ display: 'flex', background: 'linear-gradient(135deg, #ff00ff, #00ffff)', width: '100%', height: '200px', alignItems: 'center', justifyContent: 'center', borderRadius: '10px' }}>
+                    <span style={{ fontSize: '3rem' }}>🎨</span>
+                  </div>
+                )}
               </div>
               <h4>{art.name}</h4>
               <p className="artist-name">by {art.artist}</p>
@@ -90,14 +98,16 @@ export default function ArtGallery() {
               borderRadius: '10px',
               overflow: 'hidden'
             }}>
-              <img 
-                src={selectedArt.image} 
-                alt={selectedArt.name}
-                style={{ width: '100%', height: 'auto', display: 'block' }}
-                onError={(e) => {
-                  e.target.parentElement.innerHTML = '<div style="width: 100%; height: 400px; background: linear-gradient(45deg, #ff0080, #00ff80, #0080ff); display: flex; align-items: center; justify-content: center; font-size: 8rem;">🎨</div>'
-                }}
-              />
+              {!modalImageError ? (
+                <img 
+                  src={selectedArt.image} 
+                  alt={selectedArt.name}
+                  style={{ width: '100%', height: 'auto', display: 'block' }}
+                  onError={() => setModalImageError(true)}
+                />
+              ) : (
+                <div style={{ width: '100%', height: '400px', background: 'linear-gradient(45deg, #ff0080, #00ff80, #0080ff)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '8rem' }}>🎨</div>
+              )}
             </div>
             <button onClick={closeModal} style={{
               padding: '15px 40px',

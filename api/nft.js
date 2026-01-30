@@ -90,6 +90,14 @@ function generateUniqueId() {
 
 /**
  * Mint NFT to blockchain using ethers.js
+ * 
+ * SECURITY WARNING: This endpoint uses a server-side hot wallet (MINTER_PRIVATE_KEY).
+ * In production, you MUST implement:
+ * - Authentication (verify user identity)
+ * - Rate limiting (prevent spam minting)
+ * - Allowlists/quotas (control who can mint and how many)
+ * - Use a dedicated low-value minter wallet, not a personal wallet
+ * 
  * @async
  * @param {string} nftId - NFT identifier
  * @param {string} walletAddress - Ethereum wallet address
@@ -97,6 +105,16 @@ function generateUniqueId() {
  */
 async function mintToBlockchain(nftId, walletAddress) {
     const { ethers } = require('ethers');
+    
+    // Validate nftId
+    if (!nftId || typeof nftId !== 'string' || nftId.length === 0) {
+        throw new Error('Invalid nftId: must be a non-empty string');
+    }
+    
+    // Validate wallet address format
+    if (!walletAddress || !ethers.isAddress(walletAddress)) {
+        throw new Error('Invalid wallet address');
+    }
     
     const rpcUrl = process.env.ETHEREUM_RPC_URL || process.env.POLYGON_RPC_URL;
     const privateKey = process.env.MINTER_PRIVATE_KEY;
@@ -116,7 +134,9 @@ async function mintToBlockchain(nftId, walletAddress) {
     
     const nftContract = new ethers.Contract(contractAddress, nftContractABI, wallet);
     
-    const tokenId = BigInt('0x' + Buffer.from(nftId).toString('hex').slice(0, 16));
+    // Generate collision-resistant tokenId using keccak256 hash
+    const tokenIdHash = ethers.keccak256(ethers.toUtf8Bytes(nftId + Date.now().toString()));
+    const tokenId = BigInt(tokenIdHash) % BigInt('0xFFFFFFFFFFFFFFFF'); // Fit into uint64 range
     
     const tx = await nftContract.mintNFT(walletAddress, tokenId);
     const receipt = await tx.wait();

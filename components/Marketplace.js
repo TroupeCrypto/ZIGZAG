@@ -9,7 +9,7 @@ export default function Marketplace() {
     setViewType(type)
   }
 
-  const handleMarketplaceClick = (marketplace, url) => {
+  const handleMarketplaceClick = (url) => {
     if (url) {
       window.open(url, '_blank')
     }
@@ -62,7 +62,7 @@ export default function Marketplace() {
               <li>Exclusive releases</li>
               <li>Instant download</li>
             </ul>
-            <button className="btn-marketplace" onClick={() => handleMarketplaceClick('Music Store', '/music')}>
+            <button className="btn-marketplace" onClick={() => handleMarketplaceClick('/music')}>
               Browse Music
             </button>
           </div>
@@ -74,7 +74,7 @@ export default function Marketplace() {
               <li>High-res downloads</li>
               <li>Commercial licenses</li>
             </ul>
-            <button className="btn-marketplace" onClick={() => handleMarketplaceClick('Art Marketplace', '/art')}>
+            <button className="btn-marketplace" onClick={() => handleMarketplaceClick('/art')}>
               Browse Art
             </button>
           </div>
@@ -86,7 +86,7 @@ export default function Marketplace() {
               <li>Rarible</li>
               <li>Foundation</li>
             </ul>
-            <button className="btn-marketplace" onClick={() => handleMarketplaceClick('NFT Marketplace', 'https://opensea.io/collection/zigzag')}>
+            <button className="btn-marketplace" onClick={() => handleMarketplaceClick('https://opensea.io/collection/zigzag')}>
               View NFTs
             </button>
           </div>
@@ -98,7 +98,7 @@ export default function Marketplace() {
               <li>Graphic design</li>
               <li>Web development</li>
             </ul>
-            <button className="btn-marketplace" onClick={() => handleMarketplaceClick('Services', 'mailto:services@zigzag.com')}>
+            <button className="btn-marketplace" onClick={() => handleMarketplaceClick('mailto:services@zigzag.com')}>
               Get Quote
             </button>
           </div>

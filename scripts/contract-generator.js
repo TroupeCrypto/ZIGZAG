@@ -206,8 +206,6 @@ contract ${symbol} is Ownable {
             const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
             const walletAddress = accounts[0];
             
-            const code = contractCode.textContent;
-            
             alert(`Contract ready for deployment!\n\nTo deploy:\n1. Copy the contract code\n2. Go to Remix IDE (remix.ethereum.org)\n3. Paste and compile the contract\n4. Deploy using your connected wallet\n\nConnected wallet: ${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}`);
             
             if (window.psiloNotify) {
