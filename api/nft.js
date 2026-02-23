@@ -68,12 +68,12 @@ router.post('/mint', async (req, res) => {
         const { nftId, walletAddress } = req.body;
         
         // Blockchain minting logic here
-        const transactionHash = await mintToBlockchain(nftId, walletAddress);
+        const result = await mintToBlockchain(nftId, walletAddress);
         
         res.json({ 
             success: true, 
-            transactionHash,
-            tokenId: nftId 
+            transactionHash: result.hash,
+            tokenId: result.tokenId 
         });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
@@ -89,22 +89,63 @@ function generateUniqueId() {
 }
 
 /**
- * Mint NFT to blockchain (mock implementation)
+ * Mint NFT to blockchain using ethers.js
+ * 
+ * SECURITY WARNING: This endpoint uses a server-side hot wallet (MINTER_PRIVATE_KEY).
+ * In production, you MUST implement:
+ * - Authentication (verify user identity)
+ * - Rate limiting (prevent spam minting)
+ * - Allowlists/quotas (control who can mint and how many)
+ * - Use a dedicated low-value minter wallet, not a personal wallet
+ * 
  * @async
  * @param {string} nftId - NFT identifier
  * @param {string} walletAddress - Ethereum wallet address
- * @returns {Promise<string>} Mock transaction hash
+ * @returns {Promise<{hash: string, tokenId: string}>} Transaction hash and tokenId
  */
 async function mintToBlockchain(nftId, walletAddress) {
-    // TODO: Implement actual blockchain minting using Web3.js or ethers.js
-    // This is a mock implementation for demonstration
-    // In production, this should:
-    // 1. Connect to Ethereum/Polygon network
-    // 2. Call smart contract mint function with nftId
-    // 3. Send transaction from/to walletAddress
-    // 4. Return actual transaction hash
-    return '0x' + Array.from({length: 64}, () => 
-        Math.floor(Math.random() * 16).toString(16)).join('');
+    const { ethers } = require('ethers');
+    
+    // Validate nftId
+    if (!nftId || typeof nftId !== 'string' || nftId.length === 0) {
+        throw new Error('Invalid nftId: must be a non-empty string');
+    }
+    
+    // Validate wallet address format
+    if (!walletAddress || !ethers.isAddress(walletAddress)) {
+        throw new Error('Invalid wallet address');
+    }
+    
+    const rpcUrl = process.env.ETHEREUM_RPC_URL || process.env.POLYGON_RPC_URL;
+    const privateKey = process.env.MINTER_PRIVATE_KEY;
+    const contractAddress = process.env.NFT_CONTRACT_ADDRESS;
+    
+    if (!rpcUrl || !privateKey || !contractAddress) {
+        throw new Error('Blockchain configuration missing. Set ETHEREUM_RPC_URL, MINTER_PRIVATE_KEY, and NFT_CONTRACT_ADDRESS environment variables.');
+    }
+    
+    const provider = new ethers.JsonRpcProvider(rpcUrl);
+    const wallet = new ethers.Wallet(privateKey, provider);
+    
+    const nftContractABI = [
+        'function mintNFT(address recipient, uint256 tokenId) public returns (uint256)',
+        'function safeMint(address to, uint256 tokenId) public'
+    ];
+    
+    const nftContract = new ethers.Contract(contractAddress, nftContractABI, wallet);
+    
+    // Generate collision-resistant tokenId using keccak256 hash with additional randomness
+    const randomBytes = ethers.randomBytes(16);
+    const tokenIdHash = ethers.keccak256(ethers.concat([
+        ethers.toUtf8Bytes(nftId),
+        randomBytes
+    ]));
+    const tokenId = BigInt(tokenIdHash) % BigInt('0xFFFFFFFFFFFFFFFF'); // Fit into uint64 range
+    
+    const tx = await nftContract.mintNFT(walletAddress, tokenId);
+    const receipt = await tx.wait();
+    
+    return { hash: receipt.hash, tokenId: tokenId.toString() };
 }
 
 module.exports = router;

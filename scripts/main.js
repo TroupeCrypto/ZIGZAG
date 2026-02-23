@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 /**
  * Initialize wallet connection functionality
- * Handles MetaMask detection and connection simulation
+ * Handles MetaMask detection and real wallet connection
  * @function initializeWalletConnect
  * @returns {void}
  */
@@ -44,25 +44,54 @@ function initializeWalletConnect() {
     
     if (!connectButton || !walletStatus) return;
     
+    // Track connection state
+    let isConnected = false;
+    
     connectButton.addEventListener('click', async function() {
-        // Simulate wallet connection (in production, use Web3.js or ethers.js)
+        // Handle disconnect
+        if (isConnected) {
+            walletStatus.textContent = 'Not Connected';
+            walletStatus.style.color = '';
+            connectButton.textContent = 'Connect Wallet';
+            connectButton.disabled = false;
+            window.connectedWalletAddress = null;
+            isConnected = false;
+            showNotification('Wallet disconnected');
+            return;
+        }
+        
+        if (typeof window.ethereum === 'undefined') {
+            walletStatus.textContent = 'MetaMask not found';
+            walletStatus.style.color = '#ff0000';
+            showNotification('Please install MetaMask to connect', 'error');
+            return;
+        }
+        
         walletStatus.textContent = 'Connecting...';
         connectButton.disabled = true;
         
-        setTimeout(() => {
-            if (typeof window.ethereum !== 'undefined') {
-                walletStatus.textContent = 'Connected: 0x1234...5678';
+        try {
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            
+            if (accounts.length > 0) {
+                const address = accounts[0];
+                const shortAddress = `${address.slice(0, 6)}...${address.slice(-4)}`;
+                walletStatus.textContent = `Connected: ${shortAddress}`;
                 walletStatus.style.color = '#00ff00';
                 connectButton.textContent = 'Disconnect';
                 connectButton.disabled = false;
+                isConnected = true;
                 showNotification('Wallet connected successfully! 🎉');
-            } else {
-                walletStatus.textContent = 'MetaMask not found';
-                walletStatus.style.color = '#ff0000';
-                connectButton.disabled = false;
-                showNotification('Please install MetaMask to connect', 'error');
+                
+                // Store address for later use
+                window.connectedWalletAddress = address;
             }
-        }, 1500);
+        } catch (error) {
+            walletStatus.textContent = 'Connection failed';
+            walletStatus.style.color = '#ff0000';
+            connectButton.disabled = false;
+            showNotification(`Connection failed: ${error.message}`, 'error');
+        }
     });
 }
 
@@ -143,14 +172,14 @@ function initializeMarketplace() {
             if (type === 'public') {
                 publicMarketplace.style.display = 'grid';
                 privateMarketplace.style.display = 'none';
-                if (window.mimoNotify) {
-                    window.mimoNotify('🔓', 'Viewing Public Marketplace');
+                if (window.psiloNotify) {
+                    window.psiloNotify('🔓', 'Viewing Public Marketplace');
                 }
             } else {
                 publicMarketplace.style.display = 'none';
                 privateMarketplace.style.display = 'grid';
-                if (window.mimoNotify) {
-                    window.mimoNotify('🔒', 'Viewing Private IP Marketplace');
+                if (window.psiloNotify) {
+                    window.psiloNotify('🔒', 'Viewing Private IP Marketplace');
                 }
             }
         });
@@ -162,8 +191,8 @@ function initializeMarketplace() {
             showNotification(`Opening ${marketplace}...`);
             animateButton(this);
             
-            if (window.mimoNotify) {
-                window.mimoNotify('🛒', `Opening ${marketplace}`);
+            if (window.psiloNotify) {
+                window.psiloNotify('🛒', `Opening ${marketplace}`);
             }
         });
     });
@@ -176,8 +205,8 @@ function initializeMarketplace() {
             showNotification(`Loading ${action}...`);
             animateButton(this);
             
-            if (window.mimoNotify) {
-                window.mimoNotify('₿', `Loading ${action}`);
+            if (window.psiloNotify) {
+                window.psiloNotify('₿', `Loading ${action}`);
             }
         });
     });
@@ -289,45 +318,76 @@ function showArtModal(artName) {
         animation: fadeIn 0.3s ease-out;
     `;
     
-    modal.innerHTML = `
-        <div style="
-            background: linear-gradient(135deg, #ff00ff, #00ffff);
-            padding: 40px;
-            border-radius: 20px;
-            text-align: center;
-            max-width: 90vw;
-            max-height: 90vh;
-            animation: zoomIn 0.3s ease-out;
-            overflow: auto;
-        ">
-            <h2 style="margin-bottom: 20px; font-size: 2.5rem;">${artName}</h2>
-            <div style="
-                width: 100%;
-                max-width: 600px;
-                height: auto;
-                aspect-ratio: 1;
-                max-height: 60vh;
-                background: linear-gradient(45deg, #ff0080, #00ff80, #0080ff);
-                border-radius: 10px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 10rem;
-                margin: 20px auto;
-            ">🎨</div>
-            <p style="margin: 20px 0; font-size: 1.2rem;">High-resolution artwork would be displayed here</p>
-            <button onclick="this.closest('.art-modal').remove()" style="
-                padding: 15px 40px;
-                background: white;
-                color: black;
-                border: none;
-                border-radius: 25px;
-                font-weight: bold;
-                cursor: pointer;
-                font-size: 1.1rem;
-            ">Close</button>
-        </div>
+    // Create modal content using DOM methods for safety
+    const contentDiv = document.createElement('div');
+    contentDiv.style.cssText = `
+        background: linear-gradient(135deg, #ff00ff, #00ffff);
+        padding: 40px;
+        border-radius: 20px;
+        text-align: center;
+        max-width: 90vw;
+        max-height: 90vh;
+        animation: zoomIn 0.3s ease-out;
+        overflow: auto;
     `;
+    
+    const title = document.createElement('h2');
+    title.style.cssText = 'margin-bottom: 20px; font-size: 2.5rem;';
+    title.textContent = artName; // Safe: uses textContent
+    
+    const imageContainer = document.createElement('div');
+    imageContainer.style.cssText = `
+        width: 100%;
+        max-width: 600px;
+        height: auto;
+        aspect-ratio: 1;
+        max-height: 60vh;
+        background: linear-gradient(45deg, #ff0080, #00ff80, #0080ff);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 20px auto;
+        overflow: hidden;
+    `;
+    
+    const img = document.createElement('img');
+    const safeName = artName.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-');
+    img.src = `/art/${safeName}.png`;
+    img.alt = artName;
+    img.style.cssText = 'width: 100%; height: 100%; object-fit: cover;';
+    img.onerror = function() {
+        const fallback = document.createElement('span');
+        fallback.style.fontSize = '8rem';
+        fallback.textContent = '🎨';
+        imageContainer.innerHTML = '';
+        imageContainer.appendChild(fallback);
+    };
+    imageContainer.appendChild(img);
+    
+    const byLine = document.createElement('p');
+    byLine.style.cssText = 'margin: 20px 0; font-size: 1.2rem;';
+    byLine.textContent = 'by ZIG ZAG';
+    
+    const closeBtn = document.createElement('button');
+    closeBtn.style.cssText = `
+        padding: 15px 40px;
+        background: white;
+        color: black;
+        border: none;
+        border-radius: 25px;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 1.1rem;
+    `;
+    closeBtn.textContent = 'Close';
+    closeBtn.onclick = function() { modal.remove(); };
+    
+    contentDiv.appendChild(title);
+    contentDiv.appendChild(imageContainer);
+    contentDiv.appendChild(byLine);
+    contentDiv.appendChild(closeBtn);
+    modal.appendChild(contentDiv);
     
     document.body.appendChild(modal);
     

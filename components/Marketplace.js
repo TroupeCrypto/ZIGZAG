@@ -7,12 +7,29 @@ export default function Marketplace() {
 
   const handleToggle = (type) => {
     setViewType(type)
-    const message = type === 'public' ? '🔓 Viewing Public Marketplace' : '🔒 Viewing Private IP Marketplace'
-    console.log(message)
   }
 
-  const handleMarketplaceClick = (marketplace) => {
-    alert(`Opening ${marketplace}...`)
+  const handleMarketplaceClick = (url) => {
+    if (url) {
+      window.open(url, '_blank')
+    }
+  }
+
+  const handleRequestAccess = async (service) => {
+    if (typeof window.ethereum === 'undefined') {
+      alert('Please install MetaMask to request access')
+      return
+    }
+    
+    try {
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
+      if (accounts.length > 0) {
+        const address = accounts[0]
+        alert(`Access request submitted for ${service}\n\nWallet: ${address.slice(0, 6)}...${address.slice(-4)}\n\nWe will contact you via your registered email.`)
+      }
+    } catch (error) {
+      alert(`Failed to submit request: ${error.message}`)
+    }
   }
 
   return (
@@ -45,7 +62,7 @@ export default function Marketplace() {
               <li>Exclusive releases</li>
               <li>Instant download</li>
             </ul>
-            <button className="btn-marketplace" onClick={() => handleMarketplaceClick('Music Store')}>
+            <button className="btn-marketplace" onClick={() => handleMarketplaceClick('/music')}>
               Browse Music
             </button>
           </div>
@@ -57,7 +74,7 @@ export default function Marketplace() {
               <li>High-res downloads</li>
               <li>Commercial licenses</li>
             </ul>
-            <button className="btn-marketplace" onClick={() => handleMarketplaceClick('Art Marketplace')}>
+            <button className="btn-marketplace" onClick={() => handleMarketplaceClick('/art')}>
               Browse Art
             </button>
           </div>
@@ -69,7 +86,7 @@ export default function Marketplace() {
               <li>Rarible</li>
               <li>Foundation</li>
             </ul>
-            <button className="btn-marketplace" onClick={() => handleMarketplaceClick('NFT Marketplace')}>
+            <button className="btn-marketplace" onClick={() => handleMarketplaceClick('https://opensea.io/collection/zigzag')}>
               View NFTs
             </button>
           </div>
@@ -81,7 +98,7 @@ export default function Marketplace() {
               <li>Graphic design</li>
               <li>Web development</li>
             </ul>
-            <button className="btn-marketplace" onClick={() => handleMarketplaceClick('Services')}>
+            <button className="btn-marketplace" onClick={() => handleMarketplaceClick('mailto:services@zigzag.com')}>
               Get Quote
             </button>
           </div>
@@ -99,7 +116,7 @@ export default function Marketplace() {
               <li>Custom smart contracts</li>
               <li>Exclusive access</li>
             </ul>
-            <button className="btn-marketplace" onClick={() => handleMarketplaceClick('NFT Engine')}>
+            <button className="btn-marketplace" onClick={() => handleRequestAccess('NFT Engine')}>
               Request Access
             </button>
           </div>
@@ -111,7 +128,7 @@ export default function Marketplace() {
               <li>Real-time analysis</li>
               <li>Premium features</li>
             </ul>
-            <button className="btn-marketplace" onClick={() => handleMarketplaceClick('Trading Algorithms')}>
+            <button className="btn-marketplace" onClick={() => handleRequestAccess('Trading Algorithms')}>
               Request Access
             </button>
           </div>
@@ -123,7 +140,7 @@ export default function Marketplace() {
               <li>Tailored development</li>
               <li>Full support</li>
             </ul>
-            <button className="btn-marketplace" onClick={() => handleMarketplaceClick('Custom Solutions')}>
+            <button className="btn-marketplace" onClick={() => handleRequestAccess('Custom Solutions')}>
               Get Quote
             </button>
           </div>

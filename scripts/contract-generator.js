@@ -149,8 +149,8 @@ contract ${symbol} is Ownable {
         
         displayContract(contractCode);
         
-        if (window.mimoNotify) {
-            window.mimoNotify('📄', `Generated ${contractType} contract`);
+        if (window.psiloNotify) {
+            window.psiloNotify('📄', `Generated ${contractType} contract`);
         }
     }
     
@@ -176,8 +176,8 @@ contract ${symbol} is Ownable {
             const originalText = copyBtn.textContent;
             copyBtn.textContent = 'Copied!';
             
-            if (window.mimoNotify) {
-                window.mimoNotify('📋', 'Contract code copied to clipboard');
+            if (window.psiloNotify) {
+                window.psiloNotify('📋', 'Contract code copied to clipboard');
             }
             
             setTimeout(() => {
@@ -190,25 +190,33 @@ contract ${symbol} is Ownable {
     }
     
     /**
-     * Deploy contract to blockchain (simulation)
+     * Deploy contract to blockchain
      * @async
      */
     async function deployContract() {
-        deployBtn.textContent = 'Deploying...';
-        deployBtn.disabled = true;
-        
-        // Simulate deployment
-        await new Promise(resolve => setTimeout(resolve, 3000));
-        
-        const contractAddress = '0x' + Array.from({length: 40}, () => 
-            Math.floor(Math.random() * 16).toString(16)).join('');
-        
-        if (window.mimoNotify) {
-            window.mimoNotify('🚀', `Contract deployed to ${contractAddress.substring(0, 10)}...`);
+        if (typeof window.ethereum === 'undefined') {
+            alert('Please install MetaMask to deploy contracts');
+            return;
         }
         
-        deployBtn.textContent = 'Deploy to Network';
-        deployBtn.disabled = false;
+        deployBtn.textContent = 'Preparing...';
+        deployBtn.disabled = true;
+        
+        try {
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            const walletAddress = accounts[0];
+            
+            alert(`Contract ready for deployment!\n\nTo deploy:\n1. Copy the contract code\n2. Go to Remix IDE (remix.ethereum.org)\n3. Paste and compile the contract\n4. Deploy using your connected wallet\n\nConnected wallet: ${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}`);
+            
+            if (window.psiloNotify) {
+                window.psiloNotify('📄', 'Contract code ready - use Remix IDE to deploy');
+            }
+        } catch (error) {
+            alert(`Preparation failed: ${error.message}`);
+        } finally {
+            deployBtn.textContent = 'Deploy to Network';
+            deployBtn.disabled = false;
+        }
     }
     
     // Event listeners

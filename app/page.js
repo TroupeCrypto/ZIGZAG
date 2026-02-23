@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
-import MimoAssistant from '../components/MimoAssistant'
+import PSILOAssistant from '../components/PSILOAssistant'
 import Header from '../components/Header'
 import Navigation from '../components/Navigation'
 import MusicSection from '../components/MusicSection'
@@ -18,7 +18,7 @@ export default function Home() {
 
   return (
     <>
-      <MimoAssistant />
+      <PSILOAssistant />
       <div className="container">
         <Header />
         <Navigation />
