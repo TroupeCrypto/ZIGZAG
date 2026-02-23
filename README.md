@@ -56,6 +56,14 @@ This project supports GitHub OAuth login via NextAuth with a single allowed acco
 2. Set `GITHUB_ID`, `GITHUB_SECRET`, `NEXTAUTH_SECRET`, `NEXTAUTH_URL`
 3. Set `ALLOWED_GITHUB_LOGIN` to the only GitHub username that should be allowed
 
+### Backend / API location
+
+This repo uses Next.js App Router, so backend endpoints live under `app/api`.
+
+- Auth API route: `app/api/auth/[...nextauth]/route.js`
+- Route protection middleware: `middleware.js`
+- Prisma client initialization and queries: `./index.js` (schema in `prisma/schema.prisma`)
+
 ## 🎨 Design
 
 The hub features a psychedelic design with:
