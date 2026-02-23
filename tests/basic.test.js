@@ -47,4 +47,17 @@ authFiles.forEach((filePath) => {
   console.log(`  - ${filePath} ✓`);
 });
 
+// Test 5: NFT backend routes are wired in App Router
+console.log('\n✓ Test 5: NFT backend routes');
+const nftRouteFiles = [
+  'app/api/nft/generate/route.js',
+  'app/api/nft/mint/route.js'
+];
+nftRouteFiles.forEach((filePath) => {
+  if (!fs.existsSync(path.join(__dirname, '..', filePath))) {
+    throw new Error(`Missing NFT route: ${filePath}`);
+  }
+  console.log(`  - ${filePath} ✓`);
+});
+
 console.log('\n✅ All tests passed!');
