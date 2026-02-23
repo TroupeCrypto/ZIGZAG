@@ -24,7 +24,6 @@ async function mintToBlockchain(nftId, walletAddress) {
     contractAddress,
     [
       'function mintNFT(address recipient, uint256 tokenId) public returns (uint256)',
-      'function safeMint(address to, uint256 tokenId) public',
     ],
     wallet,
   )
@@ -51,6 +50,11 @@ export async function POST(request) {
       tokenId: result.tokenId,
     })
   } catch (error) {
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 })
+    const message = error?.message === 'Invalid wallet address' || error?.message?.startsWith('Invalid nftId')
+      ? error.message
+      : 'Failed to mint NFT'
+    const status = message === error?.message ? 400 : 500
+
+    return NextResponse.json({ success: false, error: message }, { status })
   }
 }

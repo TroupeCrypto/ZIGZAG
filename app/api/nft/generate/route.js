@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 
 function generateUniqueId() {
-  return Date.now().toString(36) + Math.random().toString(36).slice(2)
+  return crypto.randomUUID()
 }
 
 export async function POST(request) {
@@ -27,7 +27,7 @@ export async function POST(request) {
     }
 
     return NextResponse.json({ success: true, data: nftData })
-  } catch (error) {
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 })
+  } catch {
+    return NextResponse.json({ success: false, error: 'Failed to generate NFT' }, { status: 500 })
   }
 }
