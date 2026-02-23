@@ -1,0 +1,15 @@
+import Header from '../../components/Header'
+import ArtGallery from '../../components/ArtGallery'
+import Footer from '../../components/Footer'
+
+export default function ArtPage() {
+  return (
+    <div className="container">
+      <Header />
+      <main>
+        <ArtGallery />
+      </main>
+      <Footer />
+    </div>
+  )
+}
