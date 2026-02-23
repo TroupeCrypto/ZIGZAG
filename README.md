@@ -38,8 +38,8 @@ Simply open `index.html` in a web browser to view the hub space locally, or visi
 ### Local Development
 ```bash
 # Clone the repository
-git clone https://github.com/TroupeCrypto/ZIGZAG.git
-cd ZIGZAG
+gh repo clone TroupeCrypto/BB
+cd BB
 
 # Serve locally (Python 3)
 python3 -m http.server 8080
