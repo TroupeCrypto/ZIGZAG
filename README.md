@@ -48,6 +48,14 @@ python3 -m http.server 8080
 # Open http://localhost:8080 in your browser
 ```
 
+### GitHub Login (single user)
+
+This project supports GitHub OAuth login via NextAuth with a single allowed account.
+
+1. Copy `.env.example` to `.env.local`
+2. Set `GITHUB_ID`, `GITHUB_SECRET`, `NEXTAUTH_SECRET`, `NEXTAUTH_URL`
+3. Set `ALLOWED_GITHUB_LOGIN` to the only GitHub username that should be allowed
+
 ## 🎨 Design
 
 The hub features a psychedelic design with:

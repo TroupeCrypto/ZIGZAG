@@ -33,4 +33,18 @@ routePages.forEach((routePage) => {
   console.log(`  - ${routePage} ✓`);
 });
 
+// Test 4: GitHub auth wiring files exist
+console.log('\n✓ Test 4: GitHub auth files');
+const authFiles = [
+  'app/api/auth/[...nextauth]/route.js',
+  'app/login/page.js',
+  'middleware.js'
+];
+authFiles.forEach((filePath) => {
+  if (!fs.existsSync(path.join(__dirname, '..', filePath))) {
+    throw new Error(`Missing auth file: ${filePath}`);
+  }
+  console.log(`  - ${filePath} ✓`);
+});
+
 console.log('\n✅ All tests passed!');
