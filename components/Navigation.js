@@ -21,14 +21,14 @@ export default function Navigation() {
 
   return (
     <>
-      <nav className="main-nav">
+      <nav className="main-nav" aria-label="Section navigation">
         <a href="#music" className="nav-link" onClick={(e) => handleClick(e, '#music')}>🎵 Music</a>
         <a href="#art" className="nav-link" onClick={(e) => handleClick(e, '#art')}>🎨 Art Gallery</a>
         <a href="#crypto" className="nav-link" onClick={(e) => handleClick(e, '#crypto')}>₿ Crypto</a>
         <a href="#webdev" className="nav-link" onClick={(e) => handleClick(e, '#webdev')}>💻 Web Dev</a>
         <a href="#marketplace" className="nav-link" onClick={(e) => handleClick(e, '#marketplace')}>🛒 Marketplace</a>
       </nav>
-      <nav className="main-nav">
+      <nav className="main-nav route-nav" aria-label="Direct page navigation">
         <a href="/music" className="nav-link">Music Page</a>
         <a href="/art" className="nav-link">Art Page</a>
         <a href="/crypto" className="nav-link">Crypto Page</a>
