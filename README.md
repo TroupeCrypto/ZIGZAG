@@ -62,7 +62,7 @@ This repo uses Next.js App Router, so backend endpoints live under `app/api`.
 
 - Auth API route: `app/api/auth/[...nextauth]/route.js`
 - Route protection middleware: `middleware.js`
-- Prisma data access scripts: `index.js` with schema in `prisma/schema.prisma`
+- Prisma client initialization and queries: `./index.js` (schema in `prisma/schema.prisma`)
 
 ## 🎨 Design
 
