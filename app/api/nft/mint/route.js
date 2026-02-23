@@ -2,7 +2,7 @@ import { ethers } from 'ethers'
 import { NextResponse } from 'next/server'
 
 async function mintToBlockchain(nftId, walletAddress) {
-  if (!nftId || typeof nftId !== 'string') {
+  if (typeof nftId !== 'string' || nftId.trim().length === 0) {
     throw new Error('Invalid nftId: must be a non-empty string')
   }
 

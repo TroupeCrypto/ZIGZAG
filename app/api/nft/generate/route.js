@@ -14,7 +14,7 @@ export async function POST(request) {
       style,
       colors,
       complexity,
-      imageUrl: `/api/nft/image/${id}`,
+      imageUrl: null,
       metadata: {
         name: `ZIG ZAG NFT #${id}`,
         description: `A unique ${style} artwork`,

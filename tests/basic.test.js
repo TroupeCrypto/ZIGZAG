@@ -60,4 +60,14 @@ nftRouteFiles.forEach((filePath) => {
   console.log(`  - ${filePath} ✓`);
 });
 
+// Test 6: TypeScript support files are present
+console.log('\n✓ Test 6: TypeScript support files');
+const tsFiles = ['tsconfig.json', 'next-env.d.ts'];
+tsFiles.forEach((filePath) => {
+  if (!fs.existsSync(path.join(__dirname, '..', filePath))) {
+    throw new Error(`Missing TypeScript support file: ${filePath}`);
+  }
+  console.log(`  - ${filePath} ✓`);
+});
+
 console.log('\n✅ All tests passed!');
