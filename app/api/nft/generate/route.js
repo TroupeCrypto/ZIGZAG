@@ -4,9 +4,25 @@ function generateUniqueId() {
   return crypto.randomUUID()
 }
 
+function isNonEmptyString(value) {
+  return typeof value === 'string' && value.trim().length > 0
+}
+
 export async function POST(request) {
   try {
-    const { style, colors, complexity } = await request.json()
+    const body = await request.json()
+    const { style, colors, complexity } = body || {}
+
+    if (!isNonEmptyString(style) || !isNonEmptyString(colors) || !isNonEmptyString(complexity)) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Invalid request: style, colors, and complexity are required non-empty strings',
+        },
+        { status: 400 },
+      )
+    }
+
     const id = generateUniqueId()
 
     const nftData = {

@@ -41,7 +41,24 @@ async function mintToBlockchain(nftId, walletAddress) {
 
 export async function POST(request) {
   try {
-    const { nftId, walletAddress } = await request.json()
+    const body = await request.json()
+    const { nftId, walletAddress } = body || {}
+
+    if (
+      typeof nftId !== 'string' ||
+      nftId.trim().length === 0 ||
+      typeof walletAddress !== 'string' ||
+      walletAddress.trim().length === 0
+    ) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Invalid request: nftId and walletAddress are required non-empty strings',
+        },
+        { status: 400 },
+      )
+    }
+
     const result = await mintToBlockchain(nftId, walletAddress)
 
     return NextResponse.json({
