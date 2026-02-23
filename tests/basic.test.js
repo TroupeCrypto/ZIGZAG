@@ -47,4 +47,12 @@ authFiles.forEach((filePath) => {
   console.log(`  - ${filePath} ✓`);
 });
 
+// Test 5: Next.js serves landing page from root path
+console.log('\n✓ Test 5: Next.js root route config');
+const nextConfig = require('../next.config.js');
+if (nextConfig.basePath) {
+  throw new Error('next.config.js basePath must not be set for root landing page');
+}
+console.log('  - next.config.js basePath not set ✓');
+
 console.log('\n✅ All tests passed!');
