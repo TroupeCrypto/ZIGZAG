@@ -47,4 +47,27 @@ authFiles.forEach((filePath) => {
   console.log(`  - ${filePath} ✓`);
 });
 
+// Test 5: NFT backend routes are wired in App Router
+console.log('\n✓ Test 5: NFT backend routes');
+const nftRouteFiles = [
+  'app/api/nft/generate/route.js',
+  'app/api/nft/mint/route.js'
+];
+nftRouteFiles.forEach((filePath) => {
+  if (!fs.existsSync(path.join(__dirname, '..', filePath))) {
+    throw new Error(`Missing NFT route: ${filePath}`);
+  }
+  console.log(`  - ${filePath} ✓`);
+});
+
+// Test 6: TypeScript support files are present
+console.log('\n✓ Test 6: TypeScript support files');
+const tsFiles = ['tsconfig.json', 'next-env.d.ts'];
+tsFiles.forEach((filePath) => {
+  if (!fs.existsSync(path.join(__dirname, '..', filePath))) {
+    throw new Error(`Missing TypeScript support file: ${filePath}`);
+  }
+  console.log(`  - ${filePath} ✓`);
+});
+
 console.log('\n✅ All tests passed!');
