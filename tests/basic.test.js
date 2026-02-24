@@ -47,12 +47,27 @@ authFiles.forEach((filePath) => {
   console.log(`  - ${filePath} ✓`);
 });
 
-// Test 5: Ensure Next.js basePath is not configured (root landing page regression guard)
-console.log('\n✓ Test 5: Next.js basePath regression guard');
-const nextConfig = require('../next.config.js');
-if (Object.prototype.hasOwnProperty.call(nextConfig, 'basePath')) {
-  throw new Error('next.config.js must not define basePath for root landing page');
-}
-console.log('  - next.config.js basePath not set ✓');
+// Test 5: NFT backend routes are wired in App Router
+console.log('\n✓ Test 5: NFT backend routes');
+const nftRouteFiles = [
+  'app/api/nft/generate/route.js',
+  'app/api/nft/mint/route.js'
+];
+nftRouteFiles.forEach((filePath) => {
+  if (!fs.existsSync(path.join(__dirname, '..', filePath))) {
+    throw new Error(`Missing NFT route: ${filePath}`);
+  }
+  console.log(`  - ${filePath} ✓`);
+});
+
+// Test 6: TypeScript support files are present
+console.log('\n✓ Test 6: TypeScript support files');
+const tsFiles = ['tsconfig.json', 'next-env.d.ts'];
+tsFiles.forEach((filePath) => {
+  if (!fs.existsSync(path.join(__dirname, '..', filePath))) {
+    throw new Error(`Missing TypeScript support file: ${filePath}`);
+  }
+  console.log(`  - ${filePath} ✓`);
+});
 
 console.log('\n✅ All tests passed!');

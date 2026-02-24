@@ -61,6 +61,7 @@ This project supports GitHub OAuth login via NextAuth with a single allowed acco
 This repo uses Next.js App Router, so backend endpoints live under `app/api`.
 
 - Auth API route: `app/api/auth/[...nextauth]/route.js`
+- NFT API routes: `app/api/nft/generate/route.js`, `app/api/nft/mint/route.js`
 - Route protection middleware: `middleware.js`
 - Prisma client initialization and queries: `./index.js` (schema in `prisma/schema.prisma`)
 
