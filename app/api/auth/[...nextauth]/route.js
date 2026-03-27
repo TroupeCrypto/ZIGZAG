@@ -1,3 +1,6 @@
+export const dynamic = 'force-static'
+export const revalidate = 0
+
 import NextAuth from 'next-auth'
 import GitHubProvider from 'next-auth/providers/github'
 
