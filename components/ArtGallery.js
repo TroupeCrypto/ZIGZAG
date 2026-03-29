@@ -1,11 +1,13 @@
 'use client'
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 export default function ArtGallery() {
   const [selectedArt, setSelectedArt] = useState(null)
   const [imageError, setImageError] = useState({})
   const [modalImageError, setModalImageError] = useState(false)
+  const handledImageErrorsRef = useRef({})
+  const handledModalImageErrorRef = useRef(false)
 
   const artworks = [
     { id: 1, name: 'Cosmic Mandala', image: '/art/cosmic-mandala.png', artist: 'ZIG ZAG' },
@@ -19,15 +21,49 @@ export default function ArtGallery() {
   const handleView = (art) => {
     setSelectedArt(art)
     setModalImageError(false)
+    handledModalImageErrorRef.current = false
   }
 
   const closeModal = () => {
     setSelectedArt(null)
     setModalImageError(false)
+    handledModalImageErrorRef.current = false
   }
 
   const handleImageError = (artId) => {
+    if (handledImageErrorsRef.current[artId]) {
+      return
+    }
+
+    handledImageErrorsRef.current[artId] = true
     setImageError(prev => ({ ...prev, [artId]: true }))
+  }
+
+  const isBrokenImage = (img) => {
+    if (!img) {
+      return false
+    }
+
+    return img.complete && img.naturalWidth === 0
+  }
+
+  const handleImageRef = (artId, img) => {
+    if (isBrokenImage(img) && !handledImageErrorsRef.current[artId]) {
+      handleImageError(artId)
+    }
+  }
+
+  const handleModalImageRef = (img) => {
+    if (isBrokenImage(img) && !handledModalImageErrorRef.current) {
+      handleModalImageError()
+    }
+  }
+
+  const handleModalImageError = () => {
+    if (!handledModalImageErrorRef.current) {
+      handledModalImageErrorRef.current = true
+      setModalImageError(true)
+    }
   }
 
   return (
@@ -42,6 +78,7 @@ export default function ArtGallery() {
                   <img 
                     src={art.image} 
                     alt={art.name}
+                    ref={(img) => handleImageRef(art.id, img)}
                     onError={() => handleImageError(art.id)}
                   />
                 ) : (
@@ -102,8 +139,9 @@ export default function ArtGallery() {
                 <img 
                   src={selectedArt.image} 
                   alt={selectedArt.name}
+                  ref={handleModalImageRef}
                   style={{ width: '100%', height: 'auto', display: 'block' }}
-                  onError={() => setModalImageError(true)}
+                  onError={handleModalImageError}
                 />
               ) : (
                 <div style={{ width: '100%', height: '400px', background: 'linear-gradient(45deg, #ff0080, #00ff80, #0080ff)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '8rem' }}>🎨</div>
