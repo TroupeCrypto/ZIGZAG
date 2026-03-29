@@ -1,8 +1,9 @@
 import { withAuth } from 'next-auth/middleware'
+import { NextResponse } from 'next/server'
 
 const allowedGitHubLogin = process.env.ALLOWED_GITHUB_LOGIN?.toLowerCase()
 
-export default withAuth({
+const authMiddleware = withAuth({
   pages: {
     signIn: '/login',
   },
@@ -20,6 +21,14 @@ export default withAuth({
     },
   },
 })
+
+export default function middleware(req) {
+  if (!allowedGitHubLogin) {
+    return NextResponse.next()
+  }
+
+  return authMiddleware(req)
+}
 
 export const config = {
   matcher: ['/((?!api/auth|_next/static|_next/image|favicon.ico|login).*)'],
