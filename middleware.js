@@ -1,7 +1,7 @@
 import { withAuth } from 'next-auth/middleware'
-import { NextResponse } from 'next/server'
 
-const allowedGitHubLogin = process.env.ALLOWED_GITHUB_LOGIN?.toLowerCase()
+const normalizeGitHubLogin = (value) => value?.trim().toLowerCase()
+const allowedGitHubLogin = normalizeGitHubLogin(process.env.ALLOWED_GITHUB_LOGIN)
 
 const authMiddleware = withAuth({
   pages: {
@@ -10,23 +10,19 @@ const authMiddleware = withAuth({
   callbacks: {
     authorized: ({ token }) => {
       if (!allowedGitHubLogin) {
-        return true
+        return false
       }
 
       if (!token) {
         return false
       }
 
-      return token.login?.toLowerCase() === allowedGitHubLogin
+      return normalizeGitHubLogin(token.login) === allowedGitHubLogin
     },
   },
 })
 
 export default function middleware(req) {
-  if (!allowedGitHubLogin) {
-    return NextResponse.next()
-  }
-
   return authMiddleware(req)
 }
 
