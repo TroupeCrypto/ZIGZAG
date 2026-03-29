@@ -1,6 +1,9 @@
 import { withAuth } from 'next-auth/middleware'
 
-const normalizeGitHubLogin = (value) => value?.trim().toLowerCase()
+const normalizeGitHubLogin = (value) => {
+  const normalized = value?.trim().toLowerCase()
+  return normalized === '' ? undefined : normalized
+}
 const allowedGitHubLogin = normalizeGitHubLogin(process.env.ALLOWED_GITHUB_LOGIN)
 
 const authMiddleware = withAuth({
