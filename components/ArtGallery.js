@@ -6,6 +6,7 @@ export default function ArtGallery() {
   const [selectedArt, setSelectedArt] = useState(null)
   const [imageError, setImageError] = useState({})
   const [modalImageError, setModalImageError] = useState(false)
+  const [handledImageErrors, setHandledImageErrors] = useState({})
 
   const artworks = [
     { id: 1, name: 'Cosmic Mandala', image: '/art/cosmic-mandala.png', artist: 'ZIG ZAG' },
@@ -27,12 +28,25 @@ export default function ArtGallery() {
   }
 
   const handleImageError = (artId) => {
+    if (handledImageErrors[artId]) {
+      return
+    }
+
+    setHandledImageErrors(prev => ({ ...prev, [artId]: true }))
     setImageError(prev => ({ ...prev, [artId]: true }))
   }
 
+  const isBrokenImage = (img) => img && img.complete && img.naturalWidth === 0
+
   const handleImageRef = (artId, img) => {
-    if (img && img.complete && img.naturalWidth === 0 && !imageError[artId]) {
+    if (isBrokenImage(img) && !imageError[artId]) {
       handleImageError(artId)
+    }
+  }
+
+  const handleModalImageRef = (img) => {
+    if (isBrokenImage(img) && !modalImageError) {
+      setModalImageError(true)
     }
   }
 
@@ -109,11 +123,7 @@ export default function ArtGallery() {
                 <img 
                   src={selectedArt.image} 
                   alt={selectedArt.name}
-                  ref={(img) => {
-                    if (img && img.complete && img.naturalWidth === 0 && !modalImageError) {
-                      setModalImageError(true)
-                    }
-                  }}
+                  ref={handleModalImageRef}
                   style={{ width: '100%', height: 'auto', display: 'block' }}
                   onError={() => setModalImageError(true)}
                 />
