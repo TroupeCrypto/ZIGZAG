@@ -8,7 +8,11 @@ export default withAuth({
   },
   callbacks: {
     authorized: ({ token }) => {
-      if (!token || !allowedGitHubLogin) {
+      if (!allowedGitHubLogin) {
+        return true
+      }
+
+      if (!token) {
         return false
       }
 
