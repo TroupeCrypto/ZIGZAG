@@ -30,6 +30,12 @@ export default function ArtGallery() {
     setImageError(prev => ({ ...prev, [artId]: true }))
   }
 
+  const handleImageRef = (artId, img) => {
+    if (img && img.complete && img.naturalWidth === 0 && !imageError[artId]) {
+      handleImageError(artId)
+    }
+  }
+
   return (
     <>
       <section id="art" className="section art-section">
@@ -42,6 +48,7 @@ export default function ArtGallery() {
                   <img 
                     src={art.image} 
                     alt={art.name}
+                    ref={(img) => handleImageRef(art.id, img)}
                     onError={() => handleImageError(art.id)}
                   />
                 ) : (
@@ -102,6 +109,11 @@ export default function ArtGallery() {
                 <img 
                   src={selectedArt.image} 
                   alt={selectedArt.name}
+                  ref={(img) => {
+                    if (img && img.complete && img.naturalWidth === 0 && !modalImageError) {
+                      setModalImageError(true)
+                    }
+                  }}
                   style={{ width: '100%', height: 'auto', display: 'block' }}
                   onError={() => setModalImageError(true)}
                 />
